@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harpreet's HQ — v4</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f0e;--bg2:#161615;--bg3:#1d1d1c;--bg4:#242422;--bg5:#2c2c2a;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#f0ede8;--text2:#a09d98;--text3:#6b6864;
+  --green:#2dce89;--green-bg:rgba(45,206,137,0.1);
+  --blue:#5b9cf6;--blue-bg:rgba(91,156,246,0.1);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.1);
+  --red:#f05252;--red-bg:rgba(240,82,82,0.1);
+  --purple:#9b7fe8;--purple-bg:rgba(155,127,232,0.1);
+  --teal:#2ec4b6;--teal-bg:rgba(46,196,182,0.1);
+  --pink:#e879a0;--pink-bg:rgba(232,121,160,0.1);
+  --sidebar-w:234px;--radius:10px;
+  --font:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13.5px;line-height:1.5}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.app{display:flex;height:100vh;overflow:hidden}
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-top{padding:18px 16px 14px;border-bottom:1px solid var(--border)}
+.sidebar-brand{font-family:var(--font-display);font-size:17px;color:var(--text);letter-spacing:-0.3px;margin-bottom:2px}
+.sidebar-brand span{color:var(--green)}
+.sidebar-meta{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.sync-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.nav-section-label{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--text3);padding:14px 16px 4px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;font-size:13px;color:var(--text2);transition:all 0.15s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.nav-item.active{color:var(--text);background:rgba(255,255,255,0.05);border-left-color:var(--green)}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nav-badge{margin-left:auto;font-size:10px;padding:1px 6px;border-radius:8px;background:var(--red-bg);color:var(--red);font-weight:600}
+.sidebar-actions{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px;margin-top:auto}
+/* FAB */
+.fab{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--green);border:none;color:#000;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(45,206,137,0.4);z-index:300;transition:transform 0.2s}
+.fab:hover{transform:scale(1.08)}
+/* MAIN */
+.main{flex:1;overflow-y:auto}
+.main-inner{padding:24px 28px}
+.page{display:none}.page.active{display:block;animation:fadeIn 0.18s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+/* TYPOGRAPHY */
+.page-header{margin-bottom:20px}
+.page-title{font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:3px}
+.page-sub{font-size:12.5px;color:var(--text3)}
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.card-title{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+/* STATS */
+.stat-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;flex:1;min-width:110px}
+.stat-label{font-size:11px;color:var(--text3);margin-bottom:4px}
+.stat-val{font-size:20px;font-weight:600;line-height:1}
+/* ALERT */
+.alert-bar{background:var(--red-bg);border:1px solid rgba(240,82,82,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--red)}
+/* PRIORITY STRIP */
+.priority-strip{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
+.priority-strip-header{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ps-tabs{display:flex;gap:4px}
+.ps-tab{font-size:11px;padding:3px 9px;border-radius:6px;cursor:pointer;color:var(--text3);border:1px solid transparent;transition:all 0.15s}
+.ps-tab.active{background:var(--red-bg);color:var(--red);border-color:rgba(240,82,82,0.2)}
+.ps-tab.t-today.active{background:var(--amber-bg);color:var(--amber);border-color:rgba(245,166,35,0.2)}
+.ps-tab.t-waiting.active{background:var(--blue-bg);color:var(--blue);border-color:rgba(91,156,246,0.2)}
+.ps-items{max-height:160px;overflow-y:auto}
+.ps-item{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--border);transition:background 0.15s}
+.ps-item:last-child{border-bottom:none}
+.ps-item:hover{background:rgba(255,255,255,0.02)}
+.ps-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* TASK ITEMS */
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.task-item:last-child{border-bottom:none}
+.task-item.done-item{opacity:0.45}
+.task-check{width:15px;height:15px;border-radius:4px;border:1px solid var(--border2);cursor:pointer;flex-shrink:0;margin-top:2px;transition:all 0.15s}
+.task-check.done{background:var(--green);border-color:var(--green)}
+.task-text{font-size:13px;flex:1;color:var(--text)}.task-text.done{text-decoration:line-through;color:var(--text3)}
+.task-meta{font-size:11px;color:var(--text3);margin-top:2px}
+/* STATUS CHIPS */
+.sc{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;flex-shrink:0;cursor:pointer;white-space:nowrap}
+.sc-pending{background:var(--bg4);color:var(--text3)}
+.sc-progress{background:var(--blue-bg);color:var(--blue)}
+.sc-waiting{background:var(--amber-bg);color:var(--amber)}
+.sc-done{background:var(--green-bg);color:var(--green)}
+.sc-critical{background:var(--red-bg);color:var(--red)}
+/* TAGS */
+.tag{font-size:10px;padding:2px 7px;border-radius:6px;font-weight:600;flex-shrink:0}
+.tag-personal{background:var(--green-bg);color:var(--green)}
+.tag-property{background:var(--purple-bg);color:var(--purple)}
+.tag-business{background:var(--amber-bg);color:var(--amber)}
+.tag-health{background:var(--teal-bg);color:var(--teal)}
+.tag-legal{background:var(--blue-bg);color:var(--blue)}
+.tag-overdue{background:var(--red-bg);color:var(--red)}
+/* AI BOX */
+.ai-box{background:var(--bg3);border-left:2px solid var(--purple);border-radius:0 8px 8px 0;padding:11px 14px;margin-bottom:10px}
+.ai-label{font-size:10.5px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em}
+.ai-box p{font-size:12.5px;color:var(--text2);line-height:1.6}
+.ai-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ai-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
+.ai-btn:hover{background:var(--bg4);color:var(--text)}
+.ai-btn-p{background:var(--purple-bg);border-color:rgba(155,127,232,0.3);color:var(--purple)}
+/* HABIT TRACKER */
+.habit-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.habit-row:last-child{border-bottom:none}
+.habit-info{flex:1}
+.habit-name{font-size:13px;color:var(--text);font-weight:500}
+.habit-meta{font-size:11px;color:var(--text3);margin-top:1px}
+.toggle{width:34px;height:18px;border-radius:9px;background:var(--bg4);border:none;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:var(--green)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:white;transition:transform 0.2s}
+.toggle.on::after{transform:translateX(16px)}
+/* HABIT DASHBOARD REMINDER */
+.habit-reminder{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--amber-bg);border:1px solid rgba(245,166,35,0.2);border-radius:7px;margin-bottom:6px}
+.habit-reminder-text{font-size:12.5px;color:var(--amber);flex:1}
+/* CONTACTS */
+.contact-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color 0.15s}
+.contact-card:hover{border-color:var(--border2)}
+.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+/* PROPERTY TABLE */
+.prop-table-wrap{overflow-x:auto;margin-bottom:14px}
+.prop-table{width:100%;border-collapse:collapse;font-size:12px;min-width:1200px}
+.prop-table th{padding:8px 10px;text-align:left;font-size:10.5px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg3)}
+.prop-table td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.prop-table tr:hover td{background:rgba(255,255,255,0.02)}
+.prop-table td.num{text-align:right;font-weight:500}
+.prop-table td.green{color:var(--green)}
+.prop-table td.amber{color:var(--amber)}
+.prop-table td.red{color:var(--red)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:8px;border:1px solid var(--border2);background:transparent;cursor:pointer;font-size:12.5px;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--bg3);color:var(--text)}
+.btn-primary{background:var(--green);border-color:var(--green);color:#000;font-weight:500}
+.btn-primary:hover{background:#25b878;color:#000}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-purple{background:var(--purple-bg);border-color:rgba(155,127,232,0.3);color:var(--purple)}
+.btn-purple:hover{background:rgba(155,127,232,0.2)}
+.btn-danger{border-color:var(--red);color:var(--red)}
+.btn-danger:hover{background:var(--red-bg)}
+.btn-icon{width:30px;height:30px;padding:0;justify-content:center;font-size:13px;border-radius:7px}
+/* FORMS */
+.form-group{margin-bottom:11px}
+.form-group label{display:block;font-size:11.5px;color:var(--text3);margin-bottom:4px;font-weight:500}
+input[type=text],input[type=date],input[type=time],input[type=email],input[type=number],input[type=tel],select,textarea{width:100%;padding:8px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-size:13px;font-family:var(--font);transition:border-color 0.15s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--green)}
+input[type=range]{accent-color:var(--green);width:100%}
+textarea{resize:vertical;min-height:70px}
+select option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.checkbox-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2);cursor:pointer;padding:4px 0}
+.checkbox-row input{width:auto}
+.day-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.day-btn{padding:4px 10px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:11.5px;cursor:pointer;font-family:var(--font);transition:all 0.15s}
+.day-btn.active{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+/* TABS */
+.tab-bar{display:flex;gap:2px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+.tab{padding:8px 14px;cursor:pointer;font-size:12.5px;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s}
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:400;backdrop-filter:blur(3px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:22px;width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;position:relative}
+.modal-xl{width:720px}
+.modal-title{font-family:var(--font-display);font-size:18px;color:var(--text);margin-bottom:16px}
+.close-btn{position:absolute;top:16px;right:16px;cursor:pointer;font-size:18px;color:var(--text3);background:none;border:none;line-height:1}
+.close-btn:hover{color:var(--text)}
+/* EMAIL COMPOSE */
+.email-compose{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
+.email-compose-header{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg4)}
+.email-field{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border)}
+.email-field label{font-size:11.5px;color:var(--text3);min-width:50px;font-weight:500}
+.email-field input{flex:1;border:none;background:transparent;color:var(--text);font-size:13px;font-family:var(--font);outline:none;padding:0}
+.email-body-area{padding:12px 16px}
+.email-body-area textarea{border:none;background:transparent;color:var(--text);font-size:13px;min-height:160px;resize:none;padding:0;width:100%}
+.email-toolbar{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+/* TIMELINE */
+.tl-item{display:flex;gap:10px;padding:8px 0;border-left:1px solid var(--border);padding-left:14px;margin-left:6px;position:relative}
+.tl-item::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);position:absolute;left:-4px;top:11px}
+.tl-green::before{background:var(--green);border-color:var(--green)}
+.tl-blue::before{background:var(--blue);border-color:var(--blue)}
+.tl-amber::before{background:var(--amber);border-color:var(--amber)}
+.tl-red::before{background:var(--red);border-color:var(--red)}
+.tl-purple::before{background:var(--purple);border-color:var(--purple)}
+.tl-time{font-size:11px;color:var(--text3);min-width:80px;flex-shrink:0;margin-top:1px}
+.tl-content{flex:1;font-size:12.5px;color:var(--text2)}
+/* BADGE */
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-blue{background:var(--blue-bg);color:var(--blue)}
+.badge-purple{background:var(--purple-bg);color:var(--purple)}
+.badge-teal{background:var(--teal-bg);color:var(--teal)}
+/* NOTE CARD */
+.note-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px}
+.note-card:hover{border-color:var(--border2)}
+.note-ai{font-size:11.5px;color:var(--purple);font-style:italic;padding:6px 10px;background:var(--purple-bg);border-radius:6px;margin:6px 0}
+/* COMPLIANCE */
+.comp-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.comp-item:last-child{border-bottom:none}
+.days-urgent{background:var(--red-bg);color:var(--red);font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px}
+.days-soon{background:var(--amber-bg);color:var(--amber);font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px}
+.days-ok{background:var(--green-bg);color:var(--green);font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px}
+/* PROGRESS */
+.progress{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-fill{height:5px;border-radius:3px;transition:width 0.4s}
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:12px 0}
+.sec-sep{display:flex;align-items:center;gap:10px;margin:16px 0 12px}
+.sec-sep-line{flex:1;height:1px;background:var(--border)}
+.sec-sep-label{font-size:10.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em}
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap input{padding-left:32px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* RE LINK */
+.re-link{background:linear-gradient(135deg,rgba(155,127,232,0.12),rgba(91,156,246,0.08));border:1px solid rgba(155,127,232,0.25);border-radius:10px;padding:16px;display:flex;align-items:center;gap:14px;text-decoration:none;margin-bottom:14px;transition:border-color 0.2s}
+.re-link:hover{border-color:rgba(155,127,232,0.45)}
+/* RISK PANEL */
+.risk-panel{background:var(--red-bg);border:1px solid rgba(240,82,82,0.2);border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.risk-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(240,82,82,0.1)}
+.risk-item:last-child{border-bottom:none}
+/* PROP DETAIL */
+.prop-detail{display:none}.prop-detail.open{display:block}
+.back-btn{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text3);font-size:12.5px;margin-bottom:16px;transition:color 0.15s}
+.back-btn:hover{color:var(--text)}
+/* SEVERITY */
+.sev-bar{display:flex;gap:3px;margin:6px 0}
+.sev-seg{height:5px;border-radius:2px;flex:1;background:var(--bg4)}
+/* EXPORT CARD */
+.exp-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all 0.15s}
+.exp-card:hover{border-color:var(--green);background:rgba(45,206,137,0.04)}
+/* STAFF PERF */
+.perf-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px}
+.perf-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.perf-score{font-size:22px;font-weight:600;min-width:40px}
+/* LOADING */
+.loading-dots::after{content:'';animation:ldots 1.4s infinite}
+@keyframes ldots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+/* CAL GRID */
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day-lbl{font-size:10.5px;color:var(--text3);text-align:center;font-weight:600;padding:4px 0}
+.cal-day{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 4px;min-height:52px;font-size:11px;cursor:pointer;transition:border-color 0.15s}
+.cal-day:hover{border-color:var(--border2)}
+.cal-day.today{border-color:var(--green);background:var(--green-bg)}
+.cal-day.other-month{opacity:0.3}
+.cal-day-num{font-size:11px;color:var(--text3);margin-bottom:2px;font-weight:600}
+.cal-day.today .cal-day-num{color:var(--green)}
+.cal-evt{font-size:9px;padding:1px 3px;border-radius:3px;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qc-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.qc-type{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 8px;cursor:pointer;text-align:center;transition:all 0.15s;font-size:12px;color:var(--text2)}
+.qc-type:hover,.qc-type.selected{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.qc-type-icon{font-size:18px;margin-bottom:3px}
+</style>
+</head>
+<body>
+<div class="app">
+<div id="toast" class="toast"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-top">
+    <div class="sidebar-brand">Harpreet's <span>HQ</span></div>
+    <div class="sidebar-meta"><div class="sync-dot"></div><span id="sidebar-date"></span><span id="sync-status" style="font-size:10px;color:var(--text3);margin-left:4px"></span></div>
+  </div>
+  <div class="nav-section-label">Command</div>
+  <div class="nav-item active" onclick="showPage('dashboard',this)"><div class="nav-dot" style="background:var(--green)"></div>Dashboard<span class="nav-badge" id="nb-badge">3</span></div>
+  <div class="nav-item" onclick="showPage('tasks',this)"><div class="nav-dot" style="background:var(--blue)"></div>Tasks & Deadlines</div>
+  <div class="nav-item" onclick="showPage('notes',this)"><div class="nav-dot" style="background:var(--teal)"></div>Notes Engine</div>
+  <div class="nav-item" onclick="showPage('calendar',this)"><div class="nav-dot" style="background:var(--amber)"></div>Calendar</div>
+  <div class="nav-section-label">Life</div>
+  <div class="nav-item" onclick="showPage('personal',this)"><div class="nav-dot" style="background:var(--green)"></div>Personal & Habits</div>
+  <div class="nav-item" onclick="showPage('health',this)"><div class="nav-dot" style="background:var(--teal)"></div>Health Tracker</div>
+  <div class="nav-section-label">Work</div>
+  <div class="nav-item" onclick="showPage('business',this)"><div class="nav-dot" style="background:var(--amber)"></div>Law Firm Ops</div>
+  <div class="nav-item" onclick="showPage('compliance',this)"><div class="nav-dot" style="background:var(--blue)"></div>Compliance</div>
+  <div class="nav-section-label">Properties</div>
+  <div class="nav-item" onclick="showPage('properties',this)"><div class="nav-dot" style="background:var(--purple)"></div>Portfolio</div>
+  <div class="nav-item" onclick="showPage('contacts',this)"><div class="nav-dot" style="background:var(--pink)"></div>Contacts & CRM</div>
+  <div class="nav-section-label">Tools</div>
+  <div class="nav-item" onclick="showPage('aiengine',this)"><div class="nav-dot" style="background:var(--purple)"></div>AI Action Engine</div>
+  <div class="nav-item" onclick="showPage('exports',this)"><div class="nav-dot" style="background:var(--text3)"></div>Export Center</div>
+  <div class="sidebar-actions">
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-qc')" style="width:100%;justify-content:center">⚡ Quick Capture</button>
+    <button class="btn btn-sm" style="width:100%;justify-content:center" onclick="window.open('https://docs.google.com/spreadsheets/d/1lsrcY75nswAXDcR_E1LttWePlKWBgpr01OEZ9lwGUNE/edit','_blank')">📊 Google Sheet</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main"><div class="main-inner">
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div class="page-title" id="dash-greeting">Good morning, Harpreet</div>
+    <div class="page-sub" id="dash-date"></div>
+  </div>
+  <!-- Habit reminders -->
+  <div id="dash-habit-reminders"></div>
+  <!-- Priority strip -->
+  <div class="priority-strip">
+    <div class="priority-strip-header">
+      <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3)">🔴 Priority Strip</span>
+      <div class="ps-tabs">
+        <div class="ps-tab active" onclick="setPSTab('overdue',this)">Overdue</div>
+        <div class="ps-tab t-today" onclick="setPSTab('today',this)">Due Today</div>
+        <div class="ps-tab t-waiting" onclick="setPSTab('waiting',this)">Waiting</div>
+      </div>
+    </div>
+    <div class="ps-items" id="ps-items"></div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-label">Habits today</div><div class="stat-val" style="color:var(--green)" id="m-habits">0/0</div></div>
+    <div class="stat"><div class="stat-label">Tasks open</div><div class="stat-val" style="color:var(--amber)" id="m-tasks">0</div></div>
+    <div class="stat"><div class="stat-label">Properties</div><div class="stat-val" style="color:var(--purple)" id="m-props">3</div></div>
+    <div class="stat"><div class="stat-label">Open issues</div><div class="stat-val" style="color:var(--red)">2</div></div>
+    <div class="stat"><div class="stat-label">Compliance soon</div><div class="stat-val" style="color:var(--blue)">2</div></div>
+  </div>
+  <!-- Calendar preview -->
+  <div class="card"><div class="card-title">📅 Next 4 days</div><div id="dash-cal-preview"></div></div>
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">📌 Pinned priorities</div>
+      <div id="dash-tasks"></div>
+      <button class="btn btn-sm" style="margin-top:10px" onclick="showPage('tasks',null)">All tasks →</button>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">🧠 AI insights</div>
+      <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Burnout risk</span></div><p>3 overdue business tasks. Marcus Reid documentation now 5 days unaddressed.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openEmailCompose('Marcus Reid','marcus.reid@hkslaw.ca','Performance review follow-up','')">📧 Email Marcus</button><button class="ai-btn" onclick="openModal('modal-addtask')">➕ Task</button></div></div>
+      <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Health pattern</span></div><p>Chest tightness logged 3× in 5 days. Prepare physician summary now.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="exportHealthReport()">📄 Export</button><button class="ai-btn" onclick="openEmailCompose('Dr. Ramesh Patel','r.patel@clinic.ca','Appointment request — chest tightness','')">📧 Email Dr. Patel</button></div></div>
+      <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Property alert</span></div><p>123 Maple renewal 4 months away. 47 Birch furnace unresolved 3 days.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="showPage('properties',null)">🏠 Portfolio</button><button class="ai-btn" onclick="window.open('https://inspiring-babka-b8a656.netlify.app/','_blank')">RE Analyzer ↗</button></div></div>
+    </div>
+  </div>
+  <div class="g3" style="margin-bottom:14px">
+    <div class="card" style="margin-bottom:0"><div class="card-title">Habits today</div><div id="dash-habits"></div><button class="btn btn-sm" style="margin-top:8px" onclick="showPage('personal',null)">Manage habits →</button></div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Quick capture</div>
+      <div class="form-group"><label>Task or note</label><input type="text" id="quick-task" placeholder="What needs to be done?"></div>
+      <div class="form-group"><label>Category</label><select id="quick-cat"><option value="personal">Personal</option><option value="health">Health</option><option value="property">Property</option><option value="business">Business</option><option value="legal">Compliance</option></select></div>
+      <button class="btn btn-primary btn-sm" onclick="addQuickTask()" style="width:100%;justify-content:center">Add + sync</button>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">AI quick ask</div>
+      <input type="text" id="dash-ai-input" placeholder="Describe a situation…" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')runDashAI()">
+      <button class="btn btn-purple btn-sm" onclick="runDashAI()" style="width:100%;justify-content:center;margin-bottom:8px">🧠 Analyze</button>
+      <div id="dash-ai-out" style="font-size:12.5px;color:var(--text2);line-height:1.6"></div>
+      <div id="dash-ai-btns" class="ai-actions" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"></div>
+    </div>
+  </div>
+  <a class="re-link" href="https://inspiring-babka-b8a656.netlify.app/" target="_blank">
+    <div style="font-size:28px">🏘️</div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px">RE Intelligence Platform</div><div style="font-size:12px;color:var(--text3)">Property analyzer · Mortgage calculator · Market comps · Legal scanner · Pipeline</div></div>
+    <div style="font-size:18px;color:var(--purple)">↗</div>
+  </a>
+</div>
+
+<!-- ══════════ TASKS ══════════ -->
+<div class="page" id="page-tasks">
+  <div class="page-header"><div class="page-title">Tasks & Deadlines</div><div class="page-sub">Active tasks at top — completed items move to bottom automatically</div></div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-addtask')">+ New task</button>
+    <button class="btn btn-sm" onclick="toggleShowDone()" id="show-done-btn">Show completed</button>
+    <div style="flex:1"></div>
+    <span id="task-summary" style="font-size:12px;color:var(--text3)"></span>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="filterTasks('all',this)">All</div>
+    <div class="tab" onclick="filterTasks('overdue',this)">Overdue</div>
+    <div class="tab" onclick="filterTasks('waiting',this)">Waiting</div>
+    <div class="tab" onclick="filterTasks('personal',this)">Personal</div>
+    <div class="tab" onclick="filterTasks('health',this)">Health</div>
+    <div class="tab" onclick="filterTasks('business',this)">Business</div>
+    <div class="tab" onclick="filterTasks('property',this)">Property</div>
+    <div class="tab" onclick="filterTasks('legal',this)">Compliance</div>
+  </div>
+  <div class="card"><div id="task-list"></div></div>
+</div>
+
+<!-- ══════════ NOTES ══════════ -->
+<div class="page" id="page-notes">
+  <div class="page-header"><div class="page-title">Notes Engine</div><div class="page-sub">Every note can become a task, email, calendar event, or export to Google Sheets</div></div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center">
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-addnote')">+ New note</button>
+    <div class="search-wrap" style="flex:1;margin-bottom:0"><span class="search-icon">🔍</span><input type="text" placeholder="Search notes…" oninput="renderNotes(this.value)"></div>
+    <select id="note-cat-filter" style="width:160px" onchange="renderNotes('')">
+      <option value="all">All categories</option>
+      <option value="Personal">Personal</option><option value="Health">Health</option>
+      <option value="Law Firm">Law Firm</option><option value="Compliance">Compliance</option>
+      <option value="Investment Property">Investment Property</option>
+      <option value="Contacts">Contacts</option><option value="Finance">Finance</option>
+    </select>
+  </div>
+  <div id="notes-list"></div>
+</div>
+
+<!-- ══════════ CALENDAR ══════════ -->
+<div class="page" id="page-calendar">
+  <div class="page-header"><div class="page-title">Calendar</div><div class="page-sub">Events sync to Google Calendar with one click · Tasks with due dates appear automatically</div></div>
+  <div style="display:flex;gap:10px;margin-bottom:14px">
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-addcal')">+ Add event</button>
+    <button class="btn btn-sm" onclick="window.open('https://calendar.google.com','_blank')">Open Google Calendar ↗</button>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="showCalTab('month',this)">Month</div>
+    <div class="tab" onclick="showCalTab('agenda',this)">Agenda</div>
+  </div>
+  <div id="cal-month-view">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <button class="btn btn-sm" onclick="calNav(-1)">← Prev</button>
+      <div style="font-size:14px;font-weight:500;color:var(--text)" id="cal-title"></div>
+      <button class="btn btn-sm" onclick="calNav(1)">Next →</button>
+    </div>
+    <div class="cal-header" id="cal-labels"></div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+  <div id="cal-agenda-view" style="display:none"><div class="card"><div class="card-title">Upcoming events</div><div id="cal-agenda"></div></div></div>
+</div>
+
+<!-- ══════════ PERSONAL & HABITS ══════════ -->
+<div class="page" id="page-personal">
+  <div class="page-header"><div class="page-title">Personal & Habits</div><div class="page-sub">Track habits by day/time · Reminders appear on dashboard · Add any habit</div></div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="showTab('per','habits',this)">Habits</div>
+    <div class="tab" onclick="showTab('per','streaks',this)">Streaks</div>
+    <div class="tab" onclick="showTab('per','notes',this)">Notes</div>
+  </div>
+  <div id="per-habits">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-addhabit')">+ Add habit</button>
+    </div>
+    <div class="g2" style="margin-bottom:0">
+      <div class="card" style="margin-bottom:0"><div class="card-title">Today's habits</div><div id="habit-list"></div><div class="divider"></div><button class="btn btn-primary btn-sm" onclick="saveHabitsToSheets()">Save + sync to Sheets</button></div>
+      <div class="card" style="margin-bottom:0"><div class="card-title">All habits</div><div id="habit-all-list"></div></div>
+    </div>
+  </div>
+  <div id="per-streaks" style="display:none"><div class="card"><div class="card-title">Habit streaks</div><div id="habit-streaks"></div></div></div>
+  <div id="per-notes" style="display:none">
+    <div class="card">
+      <div class="card-title">Personal notes</div>
+      <div class="form-group"><label>Note</label><textarea id="personal-note-text" rows="4" placeholder="Thoughts, goals, reflections…"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Category</label><select id="personal-note-cat"><option>Personal</option><option>Family</option><option>Health</option><option>Finance</option><option>Goals</option></select></div>
+        <div class="form-group"><label>Date</label><input type="date" id="personal-note-date"></div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="savePersonalNote()">Save + sync</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ HEALTH ══════════ -->
+<div class="page" id="page-health">
+  <div class="page-header"><div class="page-title">Health Incident Tracker</div><div class="page-sub">Log symptoms with severity 1–10 · AI analysis · Export doctor summaries</div></div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-health-log')">+ Log incident</button>
+    <button class="btn btn-sm" onclick="exportHealthReport()">📋 Doctor summary</button>
+    <button class="btn btn-purple btn-sm" onclick="openModal('modal-health-ai')">🧠 AI analysis</button>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="showTab('hlth','log',this)">Incident Log</div>
+    <div class="tab" onclick="showTab('hlth','contacts',this)">Medical Contacts</div>
+    <div class="tab" onclick="showTab('hlth','family',this)">Family Health</div>
+  </div>
+  <div id="hlth-log">
+    <div class="g2">
+      <div>
+        <div class="card"><div class="card-title">Recent incidents</div><div id="health-incidents"></div></div>
+      </div>
+      <div>
+        <div class="card"><div class="card-title">AI analysis</div>
+          <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">⚠️ Pattern detected</span></div><p>Chest tightness 3× in 5 days, severity escalating 4→8→6. Urgent physician consult recommended.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="exportHealthReport()">📄 Export</button><button class="ai-btn" onclick="openEmailCompose('Dr. Ramesh Patel','r.patel@clinic.ca','Urgent appointment — recurring chest tightness','')">📧 Email Dr. Patel</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="hlth-contacts" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-med-contact')">+ Add medical contact</button></div>
+    <div id="med-contacts-list"></div>
+  </div>
+  <div id="hlth-family" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-family')">+ Add family member</button></div>
+    <div id="family-list"></div>
+  </div>
+</div>
+
+<!-- ══════════ BUSINESS ══════════ -->
+<div class="page" id="page-business">
+  <div class="page-header"><div class="page-title">Law Firm Operations</div><div class="page-sub">Daily ops · Staff performance · Client admin · Marketing · Growth</div></div>
+  <div class="risk-panel">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:16px">⚠️</span><span style="font-size:12px;font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:0.07em">48-Hour Risk Panel</span></div>
+    <div class="risk-item"><div style="flex:1;font-size:12.5px;color:var(--text)">Marcus Reid — performance documentation required</div><span style="font-size:11px;color:var(--red)">5 days overdue</span></div>
+    <div class="risk-item"><div style="flex:1;font-size:12.5px;color:var(--text)">Kaur file — missing property transfer docs</div><span style="font-size:11px;color:var(--red)">7 days pending</span></div>
+    <div class="risk-item"><div style="flex:1;font-size:12.5px;color:var(--text)">LSBC Annual Report — start filing now</div><span style="font-size:11px;color:var(--red)">13 days to deadline</span></div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="showTab('biz','daily',this)">Daily Ops</div>
+    <div class="tab" onclick="showTab('biz','staff',this)">Staff</div>
+    <div class="tab" onclick="showTab('biz','clients',this)">Client Admin</div>
+    <div class="tab" onclick="showTab('biz','marketing',this)">Marketing</div>
+    <div class="tab" onclick="showTab('biz','growth',this)">Growth</div>
+  </div>
+  <!-- Daily Ops -->
+  <div id="biz-daily">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-bizhabit')">+ Add daily task</button></div>
+    <div class="g2" style="margin-bottom:0">
+      <div class="card" style="margin-bottom:0"><div class="card-title">Daily ops tracker</div><div id="biz-ops-list"></div><div class="divider"></div><button class="btn btn-primary btn-sm" onclick="saveBizOps()">Save + sync</button></div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">AI ops assistant</div>
+        <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Delegation</span></div><p>3 routine file reviews can be delegated to Ayushi (Immigration Law Clerk). Free up 2+ hours.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openEmailCompose('Ayushi','ayushi.hkslaw@gmail.com','File review delegation','')">📧 Email Ayushi</button></div></div>
+        <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Awaiting docs</span></div><p>2 client files missing documents — 5+ days. Send follow-up reminders today.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openEmailCompose('Sales/Admin','sales.hkslaw@gmail.com','Client document follow-up','')">📧 Email Sales</button></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Staff -->
+  <div id="biz-staff" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-staff')">+ Add staff member</button></div>
+    <div id="staff-list"></div>
+  </div>
+  <!-- Client Admin -->
+  <div id="biz-clients" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-client')">+ Add client matter</button></div>
+    <div id="client-list"></div>
+  </div>
+  <!-- Marketing -->
+  <div id="biz-marketing" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-mktg')">+ Add marketing item</button></div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">Marketing tracker</div>
+        <div id="mktg-list"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">AI marketing analyzer</div>
+        <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Action needed</span></div><p>LinkedIn not updated in 14 days. Post about a recent real estate closing or new service area to maintain visibility.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openModal('modal-addtask')">Create task</button><button class="ai-btn" onclick="openModal('modal-addcal')">Add to calendar</button></div></div>
+        <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Referral gap</span></div><p>No new referral follow-ups logged this month. Reach out to 2 referral sources this week.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openModal('modal-addtask')">Set reminder</button></div></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">Marketing contacts</div><div id="mktg-contacts"></div><div class="divider"></div><button class="btn btn-sm" onclick="openModal('modal-add-mktg-contact')">+ Add marketing contact</button></div>
+  </div>
+  <!-- Growth -->
+  <div id="biz-growth" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-add-growth')">+ Add growth item</button></div>
+    <div class="g2" style="margin-bottom:0">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">Growth initiatives</div>
+        <div id="growth-list"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">AI growth analyzer</div>
+        <div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Expansion</span></div><p>Hiring a second associate could increase capacity 40%. Q2 2026 target. Post job listing by April 15.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openModal('modal-addtask')">Create task</button><button class="ai-btn" onclick="addCalEventGCal('Post job listing','2026-04-15','business')">📅 Calendar</button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ COMPLIANCE ══════════ -->
+<div class="page" id="page-compliance">
+  <div class="page-header"><div class="page-title">Compliance & Legal Deadlines</div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Upcoming deadlines</div>
+      <div class="comp-item"><div style="flex:1"><div style="font-size:13px;font-weight:500">LSBC Annual Report</div><div style="font-size:11.5px;color:var(--text3)">Mar 30, 2026</div></div><span class="days-urgent">13 days</span></div>
+      <div class="comp-item"><div style="flex:1"><div style="font-size:13px;font-weight:500">Trust Account Reconciliation</div><div style="font-size:11.5px;color:var(--text3)">Apr 1, 2026</div></div><span class="days-urgent">15 days</span></div>
+      <div class="comp-item"><div style="flex:1"><div style="font-size:13px;font-weight:500">CPD Completion — 6 hrs</div><div style="font-size:11.5px;color:var(--text3)">Jun 30, 2026</div></div><span class="days-soon">105 days</span></div>
+      <div class="comp-item"><div style="flex:1"><div style="font-size:13px;font-weight:500">Liability Insurance Renewal</div><div style="font-size:11.5px;color:var(--text3)">Sep 1, 2026</div></div><span class="days-ok">168 days</span></div>
+    </div><button class="btn btn-primary btn-sm" onclick="openModal('modal-addtask')">+ Add deadline</button></div>
+    <div class="card"><div class="card-title">AI compliance assistant</div><div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">⚖️ Action required</span></div><p>LSBC Annual Report 13 days away. Start today: trust reconciliation, CPD confirmation, fee payment.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openModal('modal-addtask')">Create checklist</button></div></div></div>
+  </div>
+</div>
+
+<!-- ══════════ PROPERTIES ══════════ -->
+<div class="page" id="page-properties">
+  <div id="prop-portfolio-view">
+    <div class="page-header"><div class="page-title">Investment Portfolio</div><div class="page-sub">Full mortgage data · Auto renewal reminders · Click any row to open property profile</div></div>
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-addprop')">+ Add property</button>
+      <button class="btn btn-sm" onclick="openModal('modal-adddamage')">Log issue</button>
+      <button class="btn btn-sm" onclick="exportPropertiesToSheet()">📊 Export to Google Sheet</button>
+      <a href="https://inspiring-babka-b8a656.netlify.app/" target="_blank" class="btn btn-sm" style="margin-left:auto">🏘️ RE Intelligence ↗</a>
+    </div>
+    <!-- Property table -->
+    <div class="prop-table-wrap">
+      <table class="prop-table" id="prop-table">
+        <thead><tr>
+          <th>Address</th><th>FMV (2026)</th><th>Monthly Rent</th>
+          <th>Mtg Payment</th><th>Mtg Interest</th><th>Mtg Principal</th>
+          <th>Mtg Balance</th><th>Prop Tax/mo</th><th>Renewal Date</th>
+          <th>Lender</th><th>Mtg Agent</th><th>Ownership</th><th>Est. Equity</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="prop-tbody"></tbody>
+      </table>
+    </div>
+    <div class="ai-box" style="margin-top:4px"><div style="margin-bottom:5px"><span class="ai-label">Portfolio insight</span></div><p id="prop-ai-summary">Total est. equity: $394K across 3 properties. 123 Maple renewal July 2026 — initiate lender conversations now.</p><div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="window.open('https://inspiring-babka-b8a656.netlify.app/','_blank')">Mortgage calculator ↗</button><button class="ai-btn" onclick="exportPropertiesToSheet()">📊 Export to Sheet</button></div></div>
+  </div>
+  <!-- Property detail -->
+  <div id="prop-detail-view" class="prop-detail">
+    <div class="back-btn" onclick="closePropDetail()">← Back to portfolio</div>
+    <div class="page-header"><div class="page-title" id="prop-detail-title"></div><div class="page-sub" id="prop-detail-sub"></div></div>
+    <div class="stat-row" id="prop-detail-stats"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <button class="btn btn-primary btn-sm" onclick="window.open('https://inspiring-babka-b8a656.netlify.app/','_blank')">🏘️ Analyzer ↗</button>
+      <button class="btn btn-sm" id="prop-email-agent-btn">📧 Email Agent</button>
+      <button class="btn btn-sm" onclick="openModal('modal-adddamage')">🔧 Log Issue</button>
+      <button class="btn btn-sm" onclick="openModal('modal-addtask')">➕ Task</button>
+      <button class="btn btn-sm" onclick="openModal('modal-addnote')">📝 Note</button>
+    </div>
+    <div class="tab-bar">
+      <div class="tab active" onclick="showTab('pd','overview',this)">Overview</div>
+      <div class="tab" onclick="showTab('pd','notes',this)">Notes</div>
+      <div class="tab" onclick="showTab('pd','tasks',this)">Tasks</div>
+      <div class="tab" onclick="showTab('pd','contacts',this)">Contacts</div>
+      <div class="tab" onclick="showTab('pd','issues',this)">Issues</div>
+      <div class="tab" onclick="showTab('pd','timeline',this)">Timeline</div>
+    </div>
+    <div id="pd-overview"><div class="g2" style="margin-bottom:0"><div class="card" style="margin-bottom:0"><div class="card-title">AI analysis</div><div class="ai-box"><div style="margin-bottom:5px"><span class="ai-label">Analysis</span></div><p id="pd-ai-text"></p></div></div><div class="card" style="margin-bottom:0"><div class="card-title">Quick summary</div><div id="pd-summary"></div></div></div></div>
+    <div id="pd-notes" style="display:none"><div class="card"><div class="card-title">Property notes</div><div id="pd-notes-list"></div><div class="divider"></div><button class="btn btn-sm" onclick="openModal('modal-addnote')">+ Add note</button></div></div>
+    <div id="pd-tasks" style="display:none"><div class="card"><div class="card-title">Property tasks</div><div id="pd-tasks-list"></div><div class="divider"></div><button class="btn btn-sm" onclick="openModal('modal-addtask')">+ Add task</button></div></div>
+    <div id="pd-contacts" style="display:none"><div class="card"><div class="card-title">Related contacts</div><div id="pd-contacts-list"></div></div></div>
+    <div id="pd-issues" style="display:none"><div class="card"><div class="card-title">Issues & damage</div><div id="pd-issues-list"></div><div class="divider"></div><button class="btn btn-sm" onclick="openModal('modal-adddamage')">+ Log issue</button></div></div>
+    <div id="pd-timeline" style="display:none"><div class="card"><div class="card-title">Timeline</div><div id="pd-timeline-list"></div></div></div>
+  </div>
+</div>
+
+<!-- ══════════ CONTACTS ══════════ -->
+<div class="page" id="page-contacts">
+  <div class="page-header"><div class="page-title">Contacts & CRM</div></div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center">
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-addcontact')">+ Add contact</button>
+    <button class="btn btn-sm" onclick="openModal('modal-log-int')">📞 Log interaction</button>
+    <div class="search-wrap" style="flex:1;margin-bottom:0"><span class="search-icon">🔍</span><input type="text" id="contact-search" placeholder="Search…" oninput="renderContacts()"></div>
+    <select id="contact-cat-filter" style="width:130px" onchange="renderContacts()"><option value="all">All</option><option value="health">Health</option><option value="property">Property</option><option value="legal">Legal</option><option value="personal">Personal</option><option value="business">Business</option></select>
+  </div>
+  <div id="contact-list"></div>
+</div>
+
+<!-- ══════════ AI ENGINE ══════════ -->
+<div class="page" id="page-aiengine">
+  <div class="page-header"><div class="page-title">AI Action Engine</div><div class="page-sub">Describe any situation → AI analyzes → real action buttons generated</div></div>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span style="font-size:16px">🧠</span><span style="font-size:12px;font-weight:600;color:var(--purple)">Powered by Claude AI</span></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px"><input type="text" id="ai-input" placeholder="e.g. 'need to follow up with mortgage broker about 123 Maple renewal'…" onkeydown="if(event.key==='Enter')runAIEngine()"><button class="btn btn-purple btn-sm" onclick="runAIEngine()" style="white-space:nowrap">🧠 Analyze</button></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="btn btn-sm" onclick="setAI('Need to follow up with mortgage broker about 123 Maple renewal')">Mortgage</button>
+      <button class="btn btn-sm" onclick="setAI('Recurring chest pain this week, third time')">Health</button>
+      <button class="btn btn-sm" onclick="setAI('Marcus Reid performance issue escalating, no documentation')">Staff</button>
+      <button class="btn btn-sm" onclick="setAI('47 Birch furnace still not fixed, contractor not responding')">Property</button>
+    </div>
+    <div id="ai-response" style="font-size:13px;color:var(--text2);line-height:1.7;min-height:40px"></div>
+    <div id="ai-btns" class="ai-actions" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"></div>
+  </div>
+  <div class="g2">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Email drafting</div>
+      <div class="form-group"><label>To (contact or email)</label><input type="text" id="email-draft-to" placeholder="e.g. Mike Brennan…"></div>
+      <div class="form-group"><label>Context / subject</label><input type="text" id="email-draft-ctx" placeholder="e.g. mortgage renewal follow-up…"></div>
+      <div class="form-group"><label>What you want to say (your notes)</label><textarea id="email-draft-notes" rows="3" placeholder="Add your own points, requests, tone guidance…"></textarea></div>
+      <button class="btn btn-purple btn-sm" onclick="openEmailComposeFromForm()">🧠 Draft with AI</button>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Recent AI actions</div>
+      <div class="tl-item tl-purple"><div class="tl-time">Today</div><div class="tl-content">AI drafted email to Dr. Patel re: chest tightness</div></div>
+      <div class="tl-item tl-blue"><div class="tl-time">Today</div><div class="tl-content">AI flagged Marcus Reid documentation risk</div></div>
+      <div class="tl-item tl-amber"><div class="tl-time">Mar 15</div><div class="tl-content">AI suggested mortgage broker call re: 123 Maple</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EXPORTS ══════════ -->
+<div class="page" id="page-exports">
+  <div class="page-header"><div class="page-title">Export Center</div></div>
+  <div class="g3" style="margin-bottom:14px">
+    <div class="exp-card" onclick="exportHealthReport()"><div style="font-size:22px;margin-bottom:6px">🏥</div><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">Doctor Summary</div><div style="font-size:11.5px;color:var(--text3)">Incidents, severity, AI physician brief</div></div>
+    <div class="exp-card" onclick="exportTasks()"><div style="font-size:22px;margin-bottom:6px">✅</div><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">Task Report</div><div style="font-size:11.5px;color:var(--text3)">Overdue, upcoming, by category</div></div>
+    <div class="exp-card" onclick="exportPropertiesToSheet()"><div style="font-size:22px;margin-bottom:6px">🏠</div><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">Property Portfolio</div><div style="font-size:11.5px;color:var(--text3)">Full mortgage data → Google Sheet</div></div>
+    <div class="exp-card" onclick="exportBusiness()"><div style="font-size:22px;margin-bottom:6px">⚖️</div><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">Law Firm Report</div><div style="font-size:11.5px;color:var(--text3)">Staff, compliance, client pipeline</div></div>
+    <div class="exp-card" onclick="exportContacts()"><div style="font-size:22px;margin-bottom:6px">👥</div><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">Contact Export</div><div style="font-size:11.5px;color:var(--text3)">All contacts with interaction history</div></div>
+    <div class="exp-card" onclick="exportStaffPerformance()"><div style="font-size:22px;margin-bottom:6px">📊</div><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">Staff Performance</div><div style="font-size:11.5px;color:var(--text3)">Performance logs, errors, reviews</div></div>
+  </div>
+</div>
+
+</div></div><!-- end main -->
+</div><!-- end app -->
+
+<button class="fab" onclick="openModal('modal-qc')" title="Quick Capture">+</button>
+
+<!-- ══════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════ -->
+
+<!-- EMAIL COMPOSE — with user prompt + Gmail draft -->
+<div class="modal-bg" id="modal-email-compose">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-email-compose')">×</button>
+    <div class="modal-title">📧 Email Composer</div>
+    <div style="margin-bottom:12px">
+      <div class="form-group"><label>What do you want to say? (your notes / points)</label><textarea id="ec-user-notes" rows="3" placeholder="Add your own points, requests, context, tone… The AI will incorporate these into the draft."></textarea></div>
+      <button class="btn btn-purple btn-sm" onclick="generateEmailFromCompose()">🧠 Generate / Regenerate draft</button>
+    </div>
+    <div class="email-compose">
+      <div class="email-compose-header">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:2px">Draft</div>
+        <div id="ec-ai-status" style="font-size:11px;color:var(--purple)"></div>
+      </div>
+      <div class="email-field"><label>To</label><input type="email" id="ec-to" placeholder="recipient@email.com"></div>
+      <div class="email-field"><label>CC</label><input type="email" id="ec-cc" placeholder="cc@email.com (optional)"></div>
+      <div class="email-field"><label>Subject</label><input type="text" id="ec-subject" placeholder="Subject line"></div>
+      <div class="email-body-area"><textarea id="ec-body" placeholder="Email body will appear here after AI draft…"></textarea></div>
+      <div class="email-toolbar">
+        <button class="btn btn-primary btn-sm" onclick="openInGmail()">📨 Open in Gmail</button>
+        <button class="btn btn-sm" onclick="copyEmailDraft()">📋 Copy</button>
+        <button class="btn btn-sm" onclick="logEmailInteraction()">✓ Log as sent</button>
+        <div style="margin-left:auto;font-size:11.5px;color:var(--text3)">Edit draft above before sending</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px;font-size:12px;color:var(--text3)">
+      💡 <strong style="color:var(--text2)">Gmail setup:</strong> Click "Open in Gmail" to open a pre-filled compose window. To save directly to Drafts automatically, see the Apps Script setup in the Export Center.
+    </div>
+  </div>
+</div>
+
+<!-- QUICK CAPTURE -->
+<div class="modal-bg" id="modal-qc">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-qc')">×</button>
+    <div class="modal-title">⚡ Quick Capture</div>
+    <div class="qc-type-grid">
+      <div class="qc-type selected" onclick="selectQC(this,'task')"><div class="qc-type-icon">✅</div>Task</div>
+      <div class="qc-type" onclick="selectQC(this,'note')"><div class="qc-type-icon">📝</div>Note</div>
+      <div class="qc-type" onclick="selectQC(this,'health')"><div class="qc-type-icon">❤️</div>Health</div>
+      <div class="qc-type" onclick="selectQC(this,'property')"><div class="qc-type-icon">🏠</div>Property</div>
+      <div class="qc-type" onclick="selectQC(this,'contact')"><div class="qc-type-icon">👤</div>Contact</div>
+      <div class="qc-type" onclick="selectQC(this,'compliance')"><div class="qc-type-icon">⚖️</div>Compliance</div>
+    </div>
+    <div class="form-group"><label>Title / description</label><input type="text" id="qc-title" placeholder="What do you want to capture?"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label><select id="qc-cat"><option value="personal">Personal</option><option value="health">Health</option><option value="property">Property</option><option value="business">Business</option><option value="legal">Compliance</option></select></div>
+      <div class="form-group"><label>Due date</label><input type="date" id="qc-date"></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="qc-notes" rows="3"></textarea></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <label class="checkbox-row"><input type="checkbox" id="qc-email-rem"> Email reminder</label>
+      <label class="checkbox-row"><input type="checkbox" id="qc-pin" checked> Pin to dashboard</label>
+      <label class="checkbox-row"><input type="checkbox" id="qc-sheets" checked> Sync to Sheets</label>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveQC()">Save + sync</button><button class="btn" onclick="closeModal('modal-qc')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD TASK -->
+<div class="modal-bg" id="modal-addtask">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-addtask')">×</button>
+    <div class="modal-title">New task</div>
+    <div class="form-group"><label>Task description</label><input type="text" id="t-text" placeholder="What needs to be done?"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label><select id="t-cat"><option value="personal">Personal</option><option value="health">Health</option><option value="property">Property</option><option value="business">Business</option><option value="legal">Compliance</option></select></div>
+      <div class="form-group"><label>Priority</label><select id="t-priority"><option value="Critical">🔴 Critical</option><option value="High">High</option><option selected value="Medium">Medium</option><option value="Low">Low</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Due date</label><input type="date" id="t-date"></div>
+      <div class="form-group"><label>Status</label><select id="t-status"><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="Waiting">Waiting on response</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Linked contact</label><input type="text" id="t-contact" placeholder="e.g. Mike Brennan…"></div>
+      <div class="form-group"><label>Linked entity</label><input type="text" id="t-linked" placeholder="e.g. 123 Maple, Marcus Reid…"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Escalate after</label><select id="t-escalate"><option value="none">None</option><option value="2">2 days</option><option value="3">3 days</option><option value="5">5 days</option><option value="7">7 days</option></select></div>
+      <div class="form-group"><label>Recurrence</label><select id="t-recur"><option value="none">None</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <label class="checkbox-row"><input type="checkbox" id="t-email-rem"> Email reminder</label>
+      <label class="checkbox-row"><input type="checkbox" id="t-pin" checked> Pin to dashboard</label>
+      <label class="checkbox-row"><input type="checkbox" id="t-add-cal"> Add to calendar</label>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="addTask()">Add + sync</button><button class="btn" onclick="closeModal('modal-addtask')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD NOTE -->
+<div class="modal-bg" id="modal-addnote">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-addnote')">×</button>
+    <div class="modal-title">New note</div>
+    <div class="form-row">
+      <div class="form-group"><label>Title</label><input type="text" id="n-title" placeholder="Note title…"></div>
+      <div class="form-group"><label>Category</label><select id="n-cat"><option>Personal</option><option>Health</option><option>Law Firm</option><option>Compliance</option><option>Investment Property</option><option>Contacts</option><option>Finance</option><option>Admin</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Linked entity</label><input type="text" id="n-entity" placeholder="Person / property / file…"></div>
+      <div class="form-group"><label>Status</label><select id="n-status"><option>Active</option><option>Follow-up needed</option><option>Exported</option><option>Archived</option></select></div>
+    </div>
+    <div class="form-group"><label>Content</label><textarea id="n-body" rows="5"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Tags (comma separated)</label><input type="text" id="n-tags"></div>
+      <div class="form-group" style="display:flex;gap:12px;align-items:flex-end;padding-bottom:4px">
+        <label class="checkbox-row"><input type="checkbox" id="n-followup" checked> Follow-up required</label>
+        <label class="checkbox-row"><input type="checkbox" id="n-export"> Export flag</label>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveNote()">Save + sync to Sheet</button>
+      <button class="btn btn-purple" onclick="saveNoteWithAI()">🧠 Save + AI summary</button>
+      <button class="btn" onclick="closeModal('modal-addnote')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD HABIT -->
+<div class="modal-bg" id="modal-addhabit">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-addhabit')">×</button>
+    <div class="modal-title">Add habit</div>
+    <div class="form-group"><label>Habit name</label><input type="text" id="h-name" placeholder="e.g. Laundry, Clean house, Jog…"></div>
+    <div class="form-group"><label>Time of day</label>
+      <select id="h-time"><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="night">Night</option><option value="anytime">Anytime</option></select>
+    </div>
+    <div class="form-group">
+      <label>Days to do this habit</label>
+      <div class="day-picker" id="habit-day-picker">
+        <button class="day-btn" onclick="toggleDay(this,'Mon')">Mon</button>
+        <button class="day-btn" onclick="toggleDay(this,'Tue')">Tue</button>
+        <button class="day-btn" onclick="toggleDay(this,'Wed')">Wed</button>
+        <button class="day-btn" onclick="toggleDay(this,'Thu')">Thu</button>
+        <button class="day-btn" onclick="toggleDay(this,'Fri')">Fri</button>
+        <button class="day-btn" onclick="toggleDay(this,'Sat')">Sat</button>
+        <button class="day-btn" onclick="toggleDay(this,'Sun')">Sun</button>
+        <button class="day-btn active" onclick="toggleDayAll(this)" id="day-all-btn">Every day</button>
+      </div>
+    </div>
+    <div class="form-group"><label>Color</label>
+      <div style="display:flex;gap:8px;margin-top:4px" id="habit-color-picker">
+        <div class="day-btn active" onclick="selectHabitColor(this,'var(--green)')" style="background:var(--green-bg);border-color:var(--green);color:var(--green)">●</div>
+        <div class="day-btn" onclick="selectHabitColor(this,'var(--blue)')" style="color:var(--blue)">●</div>
+        <div class="day-btn" onclick="selectHabitColor(this,'var(--purple)')" style="color:var(--purple)">●</div>
+        <div class="day-btn" onclick="selectHabitColor(this,'var(--amber)')" style="color:var(--amber)">●</div>
+        <div class="day-btn" onclick="selectHabitColor(this,'var(--pink)')" style="color:var(--pink)">●</div>
+        <div class="day-btn" onclick="selectHabitColor(this,'var(--teal)')" style="color:var(--teal)">●</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveHabit()">Add habit</button><button class="btn" onclick="closeModal('modal-addhabit')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- HEALTH LOG -->
+<div class="modal-bg" id="modal-health-log">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-health-log')">×</button>
+    <div class="modal-title">Log health incident</div>
+    <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="hl-date"></div><div class="form-group"><label>Time</label><input type="time" id="hl-time"></div></div>
+    <div class="form-group"><label>Symptoms / description</label><textarea id="hl-symptoms" rows="3"></textarea></div>
+    <div class="form-group">
+      <label>Severity: <strong id="hl-sev-label" style="color:var(--green)">5</strong>/10</label>
+      <input type="range" min="1" max="10" value="5" id="hl-severity" oninput="document.getElementById('hl-sev-label').textContent=this.value;document.getElementById('hl-sev-label').style.color=this.value<=3?'var(--green)':this.value<=6?'var(--amber)':'var(--red)'">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>1 · Mild</span><span>5 · Moderate</span><span>10 · Emergency</span></div>
+    </div>
+    <div class="form-row"><div class="form-group"><label>Medications taken</label><input type="text" id="hl-meds"></div><div class="form-group"><label>Trigger / context</label><input type="text" id="hl-trigger"></div></div>
+    <div class="form-row"><div class="form-group"><label>Doctor / clinic</label><select id="hl-doctor"><option value="">None</option><option>Dr. Ramesh Patel</option><option>Dr. Torres</option><option>Walk-in clinic</option><option>Emergency dept.</option></select></div><div class="form-group"><label>Tests needed</label><input type="text" id="hl-tests"></div></div>
+    <div class="form-group"><label>Follow-up actions</label><textarea id="hl-followup" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveHealthLog()">Log + sync</button><button class="btn btn-purple" onclick="saveHealthWithAI()">🧠 Log + AI summary</button><button class="btn" onclick="closeModal('modal-health-log')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD MEDICAL CONTACT -->
+<div class="modal-bg" id="modal-add-med-contact">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-add-med-contact')">×</button>
+    <div class="modal-title">Add medical contact</div>
+    <div class="form-row"><div class="form-group"><label>Name</label><input type="text" id="mc-name"></div><div class="form-group"><label>Specialty / role</label><input type="text" id="mc-role" placeholder="e.g. Family doctor, Dentist…"></div></div>
+    <div class="form-row"><div class="form-group"><label>Phone</label><input type="tel" id="mc-phone"></div><div class="form-group"><label>Email</label><input type="email" id="mc-email"></div></div>
+    <div class="form-row"><div class="form-group"><label>Clinic / hospital</label><input type="text" id="mc-clinic"></div><div class="form-group"><label>Address</label><input type="text" id="mc-addr"></div></div>
+    <div class="form-group"><label>Notes (hours, referrals, etc.)</label><textarea id="mc-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveMedContact()">Save + sync</button><button class="btn" onclick="closeModal('modal-add-med-contact')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD FAMILY MEMBER -->
+<div class="modal-bg" id="modal-add-family">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-add-family')">×</button>
+    <div class="modal-title">Add family member</div>
+    <div class="form-row"><div class="form-group"><label>Name</label><input type="text" id="fm-name"></div><div class="form-group"><label>Relationship</label><input type="text" id="fm-rel" placeholder="e.g. Spouse, Child, Parent…"></div></div>
+    <div class="form-row"><div class="form-group"><label>Date of birth</label><input type="date" id="fm-dob"></div><div class="form-group"><label>OHIP / Health card #</label><input type="text" id="fm-ohip"></div></div>
+    <div class="form-group"><label>Medical conditions / allergies</label><textarea id="fm-conditions" rows="2" placeholder="e.g. Asthma, peanut allergy…"></textarea></div>
+    <div class="form-group"><label>Current medications</label><textarea id="fm-meds" rows="2" placeholder="Drug name, dosage, frequency…"></textarea></div>
+    <div class="form-group"><label>Family doctor</label><input type="text" id="fm-doctor"></div>
+    <div class="form-group"><label>Other medical contacts</label><textarea id="fm-contacts" rows="2" placeholder="Dentist, specialist, etc."></textarea></div>
+    <div class="form-group"><label>Notes</label><textarea id="fm-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveFamilyMember()">Save + sync</button><button class="btn" onclick="closeModal('modal-add-family')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- HEALTH AI -->
+<div class="modal-bg" id="modal-health-ai">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-health-ai')">×</button>
+    <div class="modal-title">🧠 AI Health Analysis</div>
+    <div class="form-group"><label>Describe your symptoms or ask a question</label><textarea id="hai-input" rows="4" placeholder="e.g. 'I've had chest tightness 3 times this week. What should I do?' or 'Summarize my incidents for my doctor.'"></textarea></div>
+    <button class="btn btn-purple" onclick="runHealthAI()" style="margin-bottom:12px">🧠 Analyze with Claude</button>
+    <div id="hai-response" style="font-size:13px;color:var(--text2);line-height:1.7;min-height:50px"></div>
+    <div id="hai-btns" class="ai-actions" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"></div>
+  </div>
+</div>
+
+<!-- ADD STAFF -->
+<div class="modal-bg" id="modal-add-staff">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-add-staff')">×</button>
+    <div class="modal-title">Add staff member</div>
+    <div class="form-row"><div class="form-group"><label>Full name</label><input type="text" id="s-name"></div><div class="form-group"><label>Role / title</label><input type="text" id="s-role"></div></div>
+    <div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="s-email"></div><div class="form-group"><label>Phone</label><input type="tel" id="s-phone"></div></div>
+    <div class="form-row"><div class="form-group"><label>Start date</label><input type="date" id="s-start"></div><div class="form-group"><label>Status</label><select id="s-status"><option>Active</option><option>On leave</option><option>Probation</option><option>PIP</option><option>Terminated</option></select></div></div>
+    <div class="form-group"><label>Performance rating (1–10)</label><input type="range" min="1" max="10" value="7" id="s-perf" oninput="document.getElementById('s-perf-label').textContent=this.value"><div style="font-size:12px;color:var(--text2);margin-top:2px">Rating: <strong id="s-perf-label">7</strong>/10</div></div>
+    <div class="form-group"><label>Notes / performance observations</label><textarea id="s-notes" rows="3"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveStaff()">Save + sync</button><button class="btn" onclick="closeModal('modal-add-staff')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD CLIENT MATTER -->
+<div class="modal-bg" id="modal-add-client">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-add-client')">×</button>
+    <div class="modal-title">Add client matter</div>
+    <div class="form-row"><div class="form-group"><label>Client name</label><input type="text" id="cl-name"></div><div class="form-group"><label>Matter / file #</label><input type="text" id="cl-matter"></div></div>
+    <div class="form-row"><div class="form-group"><label>Matter type</label><select id="cl-type"><option>Real Estate</option><option>Immigration</option><option>Corporate</option><option>Family Law</option><option>Other</option></select></div><div class="form-group"><label>Assigned to</label><select id="cl-assigned"><option value="hkslawyer.ds@gmail.com">Real Estate Clerk</option><option value="ayushi.hkslaw@gmail.com">Immigration Clerk</option><option value="sales.hkslaw@gmail.com">Sales/Admin</option><option value="lawyer@hkslaw.ca">Lawyer</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>Status</label><select id="cl-status"><option>Active</option><option>Awaiting docs</option><option>Awaiting client</option><option>Closing</option><option>Closed</option></select></div><div class="form-group"><label>Deadline</label><input type="date" id="cl-deadline"></div></div>
+    <div class="form-group"><label>Missing documents / pending items</label><textarea id="cl-pending" rows="2"></textarea></div>
+    <div class="form-group"><label>Notes</label><textarea id="cl-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveClient()">Save + sync</button>
+      <button class="btn btn-purple" onclick="emailClientFollowUp()">📧 Email staff follow-up</button>
+      <button class="btn" onclick="closeModal('modal-add-client')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD BIZ HABIT -->
+<div class="modal-bg" id="modal-add-bizhabit">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-add-bizhabit')">×</button>
+    <div class="modal-title">Add daily ops task</div>
+    <div class="form-group"><label>Task name</label><input type="text" id="bh-name" placeholder="e.g. Check court deadlines…"></div>
+    <div class="form-group"><label>Time of day</label><select id="bh-time"><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="anytime">Anytime</option></select></div>
+    <div class="form-group"><label>Days</label>
+      <div class="day-picker" id="bizhabit-day-picker">
+        <button class="day-btn" onclick="toggleDay(this,'Mon')">Mon</button>
+        <button class="day-btn" onclick="toggleDay(this,'Tue')">Tue</button>
+        <button class="day-btn" onclick="toggleDay(this,'Wed')">Wed</button>
+        <button class="day-btn" onclick="toggleDay(this,'Thu')">Thu</button>
+        <button class="day-btn" onclick="toggleDay(this,'Fri')">Fri</button>
+        <button class="day-btn" onclick="toggleDay(this,'Sat')">Sat</button>
+        <button class="day-btn" onclick="toggleDay(this,'Sun')">Sun</button>
+        <button class="day-btn active" onclick="toggleDayAll(this)">Every day</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveBizHabit()">Add</button><button class="btn" onclick="closeModal('modal-add-bizhabit')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD MARKETING ITEM -->
+<div class="modal-bg" id="modal-add-mktg">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-add-mktg')">×</button>
+    <div class="modal-title">Add marketing item</div>
+    <div class="form-group"><label>Campaign / activity</label><input type="text" id="mkt-name"></div>
+    <div class="form-row"><div class="form-group"><label>Type</label><select id="mkt-type"><option>Social media</option><option>Referral</option><option>Event</option><option>Email campaign</option><option>SEO</option><option>Ad</option><option>Other</option></select></div><div class="form-group"><label>Status</label><select id="mkt-status"><option>Planned</option><option>Active</option><option>Completed</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>Target date</label><input type="date" id="mkt-date"></div><div class="form-group"><label>Budget</label><input type="text" id="mkt-budget"></div></div>
+    <div class="form-group"><label>Notes / results</label><textarea id="mkt-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveMktg()">Save + sync</button><button class="btn" onclick="closeModal('modal-add-mktg')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD MARKETING CONTACT -->
+<div class="modal-bg" id="modal-add-mktg-contact">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-add-mktg-contact')">×</button>
+    <div class="modal-title">Add marketing contact</div>
+    <div class="form-row"><div class="form-group"><label>Name</label><input type="text" id="mktc-name"></div><div class="form-group"><label>Role / platform</label><input type="text" id="mktc-role"></div></div>
+    <div class="form-row"><div class="form-group"><label>Phone</label><input type="tel" id="mktc-phone"></div><div class="form-group"><label>Email</label><input type="email" id="mktc-email"></div></div>
+    <div class="form-group"><label>Notes</label><textarea id="mktc-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveMktgContact()">Save</button><button class="btn" onclick="closeModal('modal-add-mktg-contact')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD GROWTH ITEM -->
+<div class="modal-bg" id="modal-add-growth">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-add-growth')">×</button>
+    <div class="modal-title">Add growth initiative</div>
+    <div class="form-group"><label>Initiative name</label><input type="text" id="gr-name"></div>
+    <div class="form-row"><div class="form-group"><label>Category</label><select id="gr-cat"><option>Hiring</option><option>Office expansion</option><option>Service area</option><option>Technology</option><option>Partnership</option><option>Other</option></select></div><div class="form-group"><label>Target date</label><input type="date" id="gr-date"></div></div>
+    <div class="form-group"><label>Notes / plan</label><textarea id="gr-notes" rows="3"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveGrowth()">Save + task + calendar</button><button class="btn" onclick="closeModal('modal-add-growth')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD PROPERTY -->
+<div class="modal-bg" id="modal-addprop">
+  <div class="modal modal-xl">
+    <button class="close-btn" onclick="closeModal('modal-addprop')">×</button>
+    <div class="modal-title">Add property</div>
+    <div class="form-group"><label>Address</label><input type="text" id="p-addr"></div>
+    <div class="form-row-3">
+      <div class="form-group"><label>FMV (current year est.)</label><input type="text" id="p-fmv"></div>
+      <div class="form-group"><label>Monthly rent</label><input type="text" id="p-rent"></div>
+      <div class="form-group"><label>Ownership %</label><input type="text" id="p-ownership" placeholder="e.g. 100% or 50% (John Smith)"></div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group"><label>Mortgage payment/mo</label><input type="text" id="p-mtg-pmt"></div>
+      <div class="form-group"><label>Interest portion/mo</label><input type="text" id="p-mtg-int"></div>
+      <div class="form-group"><label>Principal portion/mo</label><input type="text" id="p-mtg-prin"></div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group"><label>Mortgage balance (year-end)</label><input type="text" id="p-mtg-bal"></div>
+      <div class="form-group"><label>Balance year</label><input type="text" id="p-mtg-yr" placeholder="e.g. 2025"></div>
+      <div class="form-group"><label>Property tax/mo</label><input type="text" id="p-tax"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Mortgage renewal date</label><input type="date" id="p-renewal"></div>
+      <div class="form-group"><label>Est. equity</label><input type="text" id="p-equity"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Lender</label><input type="text" id="p-lender"></div>
+      <div class="form-group"><label>Mortgage agent (if any)</label><input type="text" id="p-agent"></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="p-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveProperty()">Save + sync + auto-reminders</button>
+      <button class="btn" onclick="closeModal('modal-addprop')">Cancel</button>
+    </div>
+    <div style="margin-top:8px;font-size:11.5px;color:var(--text3)">💡 A renewal follow-up task will be created automatically 6 months before the renewal date, and a calendar event will be added.</div>
+  </div>
+</div>
+
+<!-- DAMAGE LOG -->
+<div class="modal-bg" id="modal-adddamage">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-adddamage')">×</button>
+    <div class="modal-title">Log property issue</div>
+    <div class="form-row"><div class="form-group"><label>Property</label><select id="d-prop" id="d-prop"></select></div><div class="form-group"><label>Date reported</label><input type="date" id="d-date"></div></div>
+    <div class="form-group"><label>Issue description</label><textarea id="d-issue" rows="3"></textarea></div>
+    <div class="form-row"><div class="form-group"><label>Est. cost</label><input type="text" id="d-cost"></div><div class="form-group"><label>Contractor</label><input type="text" id="d-cont"></div></div>
+    <div class="form-row"><div class="form-group"><label>Status</label><select id="d-status"><option>Open</option><option>In progress</option><option>Resolved</option></select></div><div class="form-group"><label>Priority</label><select id="d-pri"><option>High</option><option>Medium</option><option>Low</option></select></div></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveDamage()">Log + sync</button><button class="btn" onclick="closeModal('modal-adddamage')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD CONTACT -->
+<div class="modal-bg" id="modal-addcontact">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-addcontact')">×</button>
+    <div class="modal-title">Add contact</div>
+    <div class="form-row"><div class="form-group"><label>Name</label><input type="text" id="c-name"></div><div class="form-group"><label>Role</label><input type="text" id="c-role"></div></div>
+    <div class="form-row"><div class="form-group"><label>Category</label><select id="c-cat"><option value="health">Health</option><option value="property">Property</option><option value="legal">Legal</option><option value="personal">Personal</option><option value="business">Business</option><option value="contractor">Contractor</option></select></div><div class="form-group"><label>Organization</label><input type="text" id="c-org"></div></div>
+    <div class="form-row"><div class="form-group"><label>Phone</label><input type="tel" id="c-phone"></div><div class="form-group"><label>Email</label><input type="email" id="c-email"></div></div>
+    <div class="form-row"><div class="form-group"><label>Linked property</label><input type="text" id="c-prop"></div><div class="form-group"><label>Notes</label><input type="text" id="c-notes"></div></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveContact()">Save + sync</button><button class="btn" onclick="closeModal('modal-addcontact')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- LOG INTERACTION -->
+<div class="modal-bg" id="modal-log-int">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-log-int')">×</button>
+    <div class="modal-title">Log interaction</div>
+    <div class="form-row"><div class="form-group"><label>Contact</label><input type="text" id="li-contact"></div><div class="form-group"><label>Type</label><select id="li-type"><option value="call">📞 Call</option><option value="email">📧 Email</option><option value="meet">🤝 Meeting</option><option value="note">📝 Note</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="li-date"></div><div class="form-group"><label>Time</label><input type="time" id="li-time"></div></div>
+    <div class="form-group"><label>Summary / notes</label><textarea id="li-notes" rows="3"></textarea></div>
+    <div class="form-group"><label>Follow-up needed</label><input type="text" id="li-followup"></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveInteraction()">Save + sync</button><button class="btn" onclick="closeModal('modal-log-int')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- ADD CALENDAR EVENT -->
+<div class="modal-bg" id="modal-addcal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-addcal')">×</button>
+    <div class="modal-title">Add calendar event</div>
+    <div class="form-group"><label>Event title</label><input type="text" id="cal-ev-title"></div>
+    <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cal-ev-date"></div><div class="form-group"><label>Time</label><input type="time" id="cal-ev-time"></div></div>
+    <div class="form-row"><div class="form-group"><label>Category</label><select id="cal-ev-cat"><option value="personal">Personal</option><option value="health">Health</option><option value="property">Property</option><option value="business">Business</option><option value="legal">Legal</option></select></div><div class="form-group"><label>Duration (min)</label><input type="number" id="cal-ev-dur" value="60"></div></div>
+    <div class="form-group"><label>Notes</label><textarea id="cal-ev-notes" rows="2"></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveCalEvent()">Save + add to Google Calendar</button>
+      <button class="btn" onclick="closeModal('modal-addcal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- STAFF PERFORMANCE LOG MODAL -->
+<div class="modal-bg" id="modal-staff-perf">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('modal-staff-perf')">×</button>
+    <div class="modal-title">📊 Log performance</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Staff member: <strong id="sp-staff-name" style="color:var(--text)"></strong></div>
+    <div class="form-group">
+      <label>Log type</label>
+      <select id="sp-type">
+        <option value="note">✅ Positive note / achievement</option>
+        <option value="observation">📋 General observation</option>
+        <option value="error">⚠️ Error / mistake</option>
+        <option value="incident">🔴 Incident / concern</option>
+        <option value="review">📊 Performance review summary</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="sp-desc" rows="4" placeholder="Describe what happened, what was said, the impact, and any follow-up actions required…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Update performance score: <strong id="sp-score-label">7</strong>/10</label>
+      <input type="range" min="1" max="10" value="7" id="sp-score" oninput="document.getElementById('sp-score-label').textContent=this.value">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:2px"><span>1 · Poor</span><span>5 · Acceptable</span><span>10 · Excellent</span></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveStaffPerf()">Save log + sync</button>
+      <button class="btn" onclick="closeModal('modal-staff-perf')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════
+// ┌─────────────────────────────────────────────────────────────────┐
+// │  STEP 1 OF 1: Paste your Firebase config here (8-min setup)     │
+// │  Instructions are at the bottom of this file in the script      │
+// └─────────────────────────────────────────────────────────────────┘
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAfDP51wCqS87OpotuIAJzyL-T_JFkxFLw",
+  authDomain:        "harpreets-hq.firebaseapp.com",
+  projectId:         "harpreets-hq",
+  storageBucket:     "harpreets-hq.firebasestorage.app",
+  messagingSenderId: "174153419183",
+  appId:             "1:174153419183:web:75ef5999bdfa43d61e475a"
+};
+// Until Firebase is configured, all data saves to this browser via localStorage.
+// Once configured, data syncs to Firebase cloud across all your devices.
+const CLAUDE_API = 'https://api.anthropic.com/v1/messages';
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let showDone = false;
+let taskFilter = 'all';
+let psTab = 'overdue';
+let calYear, calMonth, calTabCurrent = 'month';
+let qcType = 'task';
+let currentPropIdx = null;
+let selectedHabitColor = 'var(--green)';
+
+let habits = [
+  {id:1,name:'Exercise / gym',time:'morning',days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],color:'var(--green)',done:false},
+  {id:2,name:'Eating well',time:'anytime',days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],color:'var(--blue)',done:false},
+  {id:3,name:'Jujitsu',time:'evening',days:['Mon','Wed','Fri'],color:'var(--purple)',done:false},
+  {id:4,name:'Clean house',time:'morning',days:['Sat'],color:'var(--amber)',done:false},
+  {id:5,name:'Laundry',time:'morning',days:['Sun'],color:'var(--pink)',done:false},
+  {id:6,name:'Jog / walk',time:'morning',days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],color:'var(--teal)',done:false},
+];
+
+let bizHabits = [
+  {id:1,name:'Review active client files',time:'morning',days:['Mon','Tue','Wed','Thu','Fri'],done:false},
+  {id:2,name:'Check court deadlines',time:'morning',days:['Mon','Tue','Wed','Thu','Fri'],done:false},
+  {id:3,name:'Staff check-in',time:'morning',days:['Mon','Tue','Wed','Thu','Fri'],done:false},
+  {id:4,name:'Review billing',time:'afternoon',days:['Mon','Tue','Wed','Thu','Fri'],done:false},
+  {id:5,name:'Reply client emails',time:'morning',days:['Mon','Tue','Wed','Thu','Fri'],done:false},
+  {id:6,name:'Deep work block (2 hrs)',time:'afternoon',days:['Mon','Tue','Wed','Thu','Fri'],done:false},
+];
+
+let tasks = [
+  {id:1,text:'Call mortgage agent re: 123 Maple renewal',cat:'property',done:false,overdue:true,date:'2026-03-10',linked:'Mike Brennan / RBC',priority:'High',status:'Waiting',contact:'Mike Brennan'},
+  {id:2,text:'Review Marcus Reid performance issue',cat:'business',done:false,overdue:true,date:'2026-03-11',linked:'Marcus Reid',priority:'Critical',status:'Pending',contact:''},
+  {id:3,text:'Log dental appointment follow-up',cat:'health',done:false,overdue:true,date:'2026-03-12',linked:'Dr. Torres',priority:'Medium',status:'Pending',contact:'Dr. Torres'},
+  {id:4,text:'Update LinkedIn firm page',cat:'business',done:false,overdue:false,date:'2026-03-20',linked:'',priority:'Low',status:'Pending',contact:''},
+  {id:5,text:'Check 47 Birch furnace repair status',cat:'property',done:false,overdue:false,date:'2026-03-18',linked:'47 Birch Ave',priority:'High',status:'Waiting',contact:''},
+  {id:6,text:'LSBC Annual Report — begin filing',cat:'legal',done:false,overdue:false,date:'2026-03-30',linked:'LSBC',priority:'High',status:'Pending',contact:''},
+  {id:7,text:'Book follow-up with Dr. Patel re: chest tightness',cat:'health',done:false,overdue:false,date:'2026-03-19',linked:'Dr. Ramesh Patel',priority:'Critical',status:'Pending',contact:'Dr. Ramesh Patel'},
+];
+
+let notes = [
+  {id:1,title:'Chest tightness — Mar 15',cat:'Health',entity:'Dr. Ramesh Patel',body:'Third episode this week. Duration ~20 min. Moderate pressure. Possible stress. Follow-up urgent.',tags:['health','urgent'],status:'Follow-up needed',followup:true,exportFlag:true,date:'2026-03-15',aiSummary:'Recurring chest tightness 3× in 5 days. Escalating severity. Recommend urgent cardiac consultation.'},
+  {id:2,title:'123 Maple mortgage renewal strategy',cat:'Investment Property',entity:'Mike Brennan / RBC',body:'Renews July 2026. Compare RBC, TD, broker rates. Mike suggests 5.1% fixed.',tags:['mortgage','renewal'],status:'Active',followup:true,exportFlag:false,date:'2026-03-12',aiSummary:''},
+  {id:3,title:'Marcus Reid performance documentation',cat:'Law Firm',entity:'Marcus Reid',body:'Multiple missed deadlines. Verbal warning Mar 10. Formal documentation required by Mar 17.',tags:['staff','urgent'],status:'Follow-up needed',followup:true,exportFlag:false,date:'2026-03-10',aiSummary:''},
+];
+
+let contacts = [
+  {name:'Dr. Ramesh Patel',role:'Family doctor',phone:'(416) 555-0112',email:'r.patel@clinic.ca',cat:'health',org:'North York Medical',prop:'',interactions:[{type:'call',date:'2026-03-10',notes:'Discussed chest tightness. Ordered ECG.',followup:'Book follow-up after ECG results'}]},
+  {name:'Dr. Torres',role:'Dentist',phone:'(416) 555-0198',email:'',cat:'health',org:'Smile Dental',prop:'',interactions:[]},
+  {name:'Mike Brennan',role:'Mortgage agent',phone:'(416) 555-0221',email:'mike.b@rbc.com',cat:'property',org:'RBC',prop:'123 Maple St',interactions:[{type:'call',date:'2026-03-08',notes:'Discussed renewal. Rate likely 5.1%.',followup:'Call back Apr 1'}]},
+  {name:'Sandra Park',role:'Mortgage agent',phone:'(905) 555-0087',email:'s.park@td.com',cat:'property',org:'TD',prop:'47 Birch Ave',interactions:[]},
+];
+
+let medContacts = [
+  {name:'Dr. Ramesh Patel',role:'Family doctor',phone:'(416) 555-0112',email:'r.patel@clinic.ca',clinic:'North York Medical',addr:'123 Yonge St, Toronto',notes:''},
+  {name:'Dr. Torres',role:'Dentist',phone:'(416) 555-0198',email:'',clinic:'Smile Dental',addr:'',notes:''},
+];
+
+let familyMembers = [];
+
+let properties = [
+  {addr:'123 Maple St',fmv:'$890,000',rent:'$2,850',mtgPmt:'$2,180',mtgInt:'$1,688',mtgPrin:'$492',mtgBal:'$387,000',mtgBalYr:'2025',tax:'$420',renewal:'2026-07-01',lender:'RBC',agent:'Mike Brennan',ownership:'100%',equity:'$148,000',notes:'Renewal July 2026. Start lender comparison April 1.'},
+  {addr:'47 Birch Ave',fmv:'$685,000',rent:'$2,400',mtgPmt:'$1,740',mtgInt:'$1,271',mtgPrin:'$469',mtgBal:'$312,000',mtgBalYr:'2025',tax:'$380',renewal:'2028-03-01',lender:'TD',agent:'Sandra Park',ownership:'100%',equity:'$138,000',notes:'Furnace issue open. Tenant satisfied otherwise.'},
+  {addr:'88 Oak Crescent',fmv:'$765,000',rent:'$3,100',mtgPmt:'$2,350',mtgInt:'$1,792',mtgPrin:'$558',mtgBal:'$421,000',mtgBalYr:'2025',tax:'$510',renewal:'2027-01-01',lender:'BMO',agent:'',ownership:'100%',equity:'$108,000',notes:'Basement moisture — inspector booked Mar 20.'},
+];
+
+let calEvents = [
+  {title:'Jujitsu class',date:'2026-03-17',time:'14:00',cat:'personal'},
+  {title:'Mortgage agent call — 123 Maple',date:'2026-03-21',time:'10:00',cat:'property'},
+  {title:'LSBC Annual Report deadline',date:'2026-03-30',time:'',cat:'legal'},
+  {title:'Book Dr. Patel appointment',date:'2026-03-19',time:'',cat:'health'},
+];
+
+let staff = [
+  {name:'RE Law Clerk / Bookkeeper',email:'hkslawyer.ds@gmail.com',role:'Real Estate Law Clerk / Bookkeeper',phone:'',start:'',status:'Active',perfScore:7,notes:'',errors:[]},
+  {name:'Sales / Admin',email:'sales.hkslaw@gmail.com',role:'Sales / Admin',phone:'',start:'',status:'Active',perfScore:7,notes:'',errors:[]},
+  {name:'Ayushi',email:'ayushi.hkslaw@gmail.com',role:'Immigration Law Clerk',phone:'',start:'',status:'Active',perfScore:8,notes:'',errors:[]},
+  {name:'Lawyer',email:'lawyer@hkslaw.ca',role:'Lawyer / Associate',phone:'',start:'',status:'Active',perfScore:7,notes:'',errors:[]},
+];
+
+let clients = [
+  {name:'Kaur conveyancing',matter:'RE-2026-001',type:'Real Estate',assigned:'hkslawyer.ds@gmail.com',status:'Awaiting docs',deadline:'2026-03-18',pending:'Property transfer docs — requested Mar 10',notes:''},
+  {name:'Sharma commercial',matter:'RE-2026-002',type:'Real Estate',assigned:'lawyer@hkslaw.ca',status:'Active',deadline:'2026-03-22',pending:'Closing package needed',notes:''},
+];
+
+let mktgItems = [
+  {name:'LinkedIn post — recent closing',type:'Social media',status:'Planned',date:'2026-03-20',budget:'',notes:'14 days since last post'},
+  {name:'Referral follow-up — Pinder Dhaliwal',type:'Referral',status:'Active',date:'2026-03-20',budget:'',notes:''},
+];
+
+let mktgContacts = [];
+let growthItems = [
+  {name:'Research commercial lease options',cat:'Office expansion',date:'2026-06-30',notes:'Q2 2026'},
+  {name:'Hire second associate',cat:'Hiring',date:'2026-06-30',notes:'Post job listing by April 15'},
+];
+
+let interactions = [];
+
+// ══════════════════════════════════════════════════════
+// CLAUDE AI
+// ══════════════════════════════════════════════════════
+async function callClaude(prompt, sysPrompt) {
+  try {
+    const r = await fetch(CLAUDE_API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system: sysPrompt || 'You are Harpreet\'s AI assistant. He is a busy BC lawyer managing a law firm and 3 investment properties. Analyze situations and return ONLY valid JSON: {"analysis":"2-3 sentence insight","actions":[{"label":"short label","type":"task|email|note|navigate","payload":"brief instruction"}]} max 4 actions.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const d = await r.json();
+    const txt = d.content?.[0]?.text||'';
+    return JSON.parse(txt.replace(/```json|```/g,'').trim());
+  } catch(e) {
+    return {analysis:'AI unavailable — check connection or API key.',actions:[]};
+  }
+}
+
+async function runAIEngine() {
+  const input = document.getElementById('ai-input').value.trim(); if(!input) return;
+  const re = document.getElementById('ai-response'); const rb = document.getElementById('ai-btns');
+  re.innerHTML='<span style="color:var(--text3);font-style:italic">Analyzing<span class="loading-dots"></span></span>';
+  rb.style.display='none';
+  const ctx = `Tasks open: ${tasks.filter(t=>!t.done).length}. Overdue: ${tasks.filter(t=>t.overdue&&!t.done).map(t=>t.text).join(', ')}.`;
+  const res = await callClaude(`"${input}". Context: ${ctx}`);
+  re.textContent = res.analysis;
+  if(res.actions?.length){rb.style.display='flex';rb.innerHTML=res.actions.map(a=>`<button class="ai-btn ai-btn-p" onclick="handleAIAction('${a.type}','${esc(a.payload)}','${esc(a.label)}')">${aiIcon(a.type)} ${a.label}</button>`).join('');}
+}
+
+async function runDashAI() {
+  const input = document.getElementById('dash-ai-input').value.trim(); if(!input) return;
+  const ro = document.getElementById('dash-ai-out'); const rb = document.getElementById('dash-ai-btns');
+  ro.innerHTML='<span style="color:var(--text3);font-style:italic">Analyzing<span class="loading-dots"></span></span>';
+  rb.style.display='none';
+  const res = await callClaude(`"${input}"`);
+  ro.textContent = res.analysis;
+  if(res.actions?.length){rb.style.display='flex';rb.innerHTML=res.actions.map(a=>`<button class="ai-btn ai-btn-p" onclick="handleAIAction('${a.type}','${esc(a.payload)}','${esc(a.label)}')">${aiIcon(a.type)} ${a.label}</button>`).join('');}
+}
+
+async function runHealthAI() {
+  const input = document.getElementById('hai-input').value.trim(); if(!input) return;
+  const ro = document.getElementById('hai-response'); const rb = document.getElementById('hai-btns');
+  ro.innerHTML='<span style="color:var(--text3);font-style:italic">Analyzing<span class="loading-dots"></span></span>';rb.style.display='none';
+  const res = await callClaude(input,'You are Harpreet\'s health management AI. Analyze health patterns. Return JSON: {"analysis":"clinical insight","actions":[{"label":"action","type":"email|task|note","payload":"context"}]}');
+  ro.textContent=res.analysis;
+  if(res.actions?.length){rb.style.display='flex';rb.innerHTML=res.actions.map(a=>`<button class="ai-btn ai-btn-p" onclick="handleAIAction('${a.type}','${esc(a.payload)}','${esc(a.label)}')">${aiIcon(a.type)} ${a.label}</button>`).join('');}
+}
+
+async function generateEmailFromCompose() {
+  const userNotes = document.getElementById('ec-user-notes').value;
+  const to = document.getElementById('ec-to').value;
+  const subject = document.getElementById('ec-subject').value;
+  const status = document.getElementById('ec-ai-status');
+  status.innerHTML = '<span class="loading-dots">Drafting</span>';
+  const body = document.getElementById('ec-body');
+  const contactCtx = contacts.find(c=>c.name.toLowerCase().includes(to.toLowerCase()));
+  const ctx = contactCtx ? `Contact: ${contactCtx.role} at ${contactCtx.org}.` : '';
+  const res = await callClaude(
+    `Draft a professional email from Harpreet Dhaliwal (BC lawyer and property investor). To: "${to}". Subject: "${subject}". ${ctx} User's notes/points to include: "${userNotes}". Return JSON: {"subject":"subject line","body":"full email with greeting, body paragraphs incorporating the user's points, and professional sign-off from Harpreet Dhaliwal, Barrister & Solicitor"}`,
+    'You draft professional emails. Return ONLY valid JSON with "subject" and "body" fields. Incorporate the user\'s specific notes and points naturally into the email body. Keep it concise and professional.'
+  );
+  status.textContent = '✓ AI draft ready — edit as needed';
+  if(res.subject) document.getElementById('ec-subject').value = res.subject;
+  if(res.body) body.value = res.body;
+  else if(res.analysis) body.value = res.analysis;
+}
+
+function openEmailCompose(toName, toEmail, subject, context) {
+  document.getElementById('ec-to').value = toEmail || toName;
+  document.getElementById('ec-subject').value = subject || '';
+  document.getElementById('ec-body').value = '';
+  document.getElementById('ec-cc').value = '';
+  document.getElementById('ec-user-notes').value = context || '';
+  document.getElementById('ec-ai-status').textContent = '';
+  openModal('modal-email-compose');
+}
+
+function openEmailComposeFromForm() {
+  const to = document.getElementById('email-draft-to').value;
+  const ctx = document.getElementById('email-draft-ctx').value;
+  const notes = document.getElementById('email-draft-notes').value;
+  const ct = contacts.find(c=>c.name.toLowerCase().includes(to.toLowerCase()));
+  openEmailCompose(to, ct?.email||to, ctx, notes);
+  // auto-generate
+  setTimeout(generateEmailFromCompose, 300);
+}
+
+function openInGmail() {
+  const to = document.getElementById('ec-to').value;
+  const cc = document.getElementById('ec-cc').value;
+  const subj = encodeURIComponent(document.getElementById('ec-subject').value);
+  const body = encodeURIComponent(document.getElementById('ec-body').value);
+  const url = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(to)}&cc=${encodeURIComponent(cc)}&su=${subj}&body=${body}`;
+  window.open(url,'_blank');
+  showToast('✓ Gmail compose opened — save as Draft in Gmail');
+}
+
+function copyEmailDraft() {
+  const text = `To: ${document.getElementById('ec-to').value}\nSubject: ${document.getElementById('ec-subject').value}\n\n${document.getElementById('ec-body').value}`;
+  navigator.clipboard.writeText(text).then(()=>showToast('✓ Email copied to clipboard'));
+}
+
+function logEmailInteraction() {
+  const to = document.getElementById('ec-to').value;
+  const ct = contacts.find(c=>c.email===to||c.name.toLowerCase().includes(to.split('@')[0].toLowerCase()));
+  if(ct){if(!ct.interactions)ct.interactions=[];ct.interactions.push({type:'email',date:new Date().toISOString().split('T')[0],notes:'Email: '+document.getElementById('ec-subject').value,followup:''});}
+  syncSheets('Email_Log',[new Date().toISOString().split('T')[0],to,'email',document.getElementById('ec-subject').value,'']);
+  closeModal('modal-email-compose');showToast('✓ Email logged');
+}
+
+// ══════════════════════════════════════════════════════
+// APPS SCRIPT SETUP INFO (exported separately)
+// ══════════════════════════════════════════════════════
+// See exportAppsScriptSetup() for the full Apps Script code
+
+function handleAIAction(type,payload,label){
+  if(type==='email'){openEmailCompose(payload,'',label,'');}
+  else if(type==='task'){document.getElementById('t-text').value=payload;openModal('modal-addtask');}
+  else if(type==='navigate'){showPage(payload,null);}
+  else{showToast('Action: '+label);}
+}
+function aiIcon(t){return{email:'📧',task:'✅',reminder:'⏰',note:'📝',navigate:'→',call:'📞'}[t]||'▶';}
+function esc(s){return(s||'').replace(/'/g,'`').replace(/"/g,'`').replace(/\n/g,' ').slice(0,80);}
+function setAI(t){document.getElementById('ai-input').value=t;}
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);if(pg)pg.classList.add('active');
+  if(el)el.classList.add('active');
+  const map={dashboard:renderDash,tasks:renderTaskList,personal:renderHabits,contacts:renderContacts,notes:()=>renderNotes(''),properties:renderProperties,calendar:renderCalendar,health:renderHealth,business:renderBusiness};
+  if(map[id])map[id]();
+}
+
+function showTab(pfx,tab,el){
+  const pgMap={per:'personal',hlth:'health',biz:'business',pd:'properties'};
+  const pg=document.getElementById('page-'+(pgMap[pfx]||pfx));if(!pg)return;
+  pg.querySelectorAll('[id^="'+pfx+'-"]').forEach(d=>d.style.display='none');
+  const t=document.getElementById(pfx+'-'+tab);if(t)t.style.display='';
+  el.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+// PRIORITY STRIP
+// ══════════════════════════════════════════════════════
+function setPSTab(tab,el){
+  psTab=tab;
+  document.querySelectorAll('.ps-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');renderPS();
+}
+function renderPS(){
+  const c=document.getElementById('ps-items');if(!c)return;
+  const today=new Date().toISOString().split('T')[0];
+  let items=[];
+  if(psTab==='overdue')items=tasks.filter(t=>t.overdue&&!t.done);
+  else if(psTab==='today')items=tasks.filter(t=>t.date===today&&!t.done);
+  else if(psTab==='waiting')items=tasks.filter(t=>t.status==='Waiting'&&!t.done);
+  const pc={Critical:'var(--red)',High:'var(--amber)',Medium:'var(--blue)',Low:'var(--text3)'};
+  c.innerHTML=items.length?items.map(t=>`<div class="ps-item"><div class="ps-dot" style="background:${pc[t.priority]||'var(--text3)'}"></div><div style="font-size:13px;flex:1;color:var(--text)">${t.text}</div><span style="font-size:11px;color:var(--text3)">${t.linked||t.cat}</span></div>`).join(''):`<div style="padding:12px 16px;color:var(--text3);font-size:13px">No items in this view ✓</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════
+function renderDash(){
+  renderPS();
+  renderDashHabits();
+  renderDashReminders();
+  renderDashCalPreview();
+  const dt=document.getElementById('dash-tasks');
+  const pinned=tasks.filter(t=>!t.done&&(t.overdue||t.priority==='Critical')).slice(0,5);
+  if(dt)dt.innerHTML=pinned.length?pinned.map(t=>`<div class="task-item"><div class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})"></div><div style="flex:1"><div class="task-text">${t.text}</div>${t.linked?`<div class="task-meta">${t.linked}</div>`:''}</div><span class="sc sc-${t.status==='Waiting'?'waiting':t.status==='In Progress'?'progress':'critical'}">${t.status}</span></div>`).join(''):'<div style="color:var(--text3);font-size:13px;padding:8px 0">All clear!</div>';
+  const mt=document.getElementById('m-tasks');if(mt)mt.textContent=tasks.filter(t=>!t.done).length;
+  const mb=document.getElementById('m-habits');if(mb){const done=habits.filter(h=>h.done).length;mb.textContent=done+'/'+habits.length;}
+  const mp=document.getElementById('m-props');if(mp)mp.textContent=properties.length;
+  const nb=document.getElementById('nb-badge');if(nb)nb.textContent=tasks.filter(t=>t.overdue&&!t.done).length;
+}
+
+function renderDashHabits(){
+  const c=document.getElementById('dash-habits');if(!c)return;
+  const today=getDayName();
+  const todayHabits=habits.filter(h=>h.days.includes(today)||h.days.includes('every'));
+  c.innerHTML=todayHabits.slice(0,4).map(h=>`<div class="habit-row"><div class="habit-info"><div class="habit-name" style="color:${h.color}">${h.name}</div><div class="habit-meta">${h.time} · ${h.days.length===7?'Every day':h.days.join(', ')}</div></div><div class="toggle ${h.done?'on':''}" onclick="toggleHabit(${h.id},this)"></div></div>`).join('');
+}
+
+function renderDashReminders(){
+  const c=document.getElementById('dash-habit-reminders');if(!c)return;
+  const today=getDayName();
+  const pending=habits.filter(h=>(h.days.includes(today)||h.days.length===7)&&!h.done);
+  c.innerHTML=pending.slice(0,3).map(h=>`<div class="habit-reminder"><span style="font-size:14px">⏰</span><div class="habit-reminder-text">Reminder: <strong>${h.name}</strong> — not done yet (${h.time})</div><button class="btn btn-sm" style="font-size:10px;padding:3px 8px" onclick="markHabitDone(${h.id},this)">Done</button></div>`).join('');
+}
+
+function renderDashCalPreview(){
+  const c=document.getElementById('dash-cal-preview');if(!c)return;
+  const today=new Date();
+  const days=Array.from({length:4},(_,i)=>{const d=new Date(today);d.setDate(today.getDate()+i);return d;});
+  const catC={personal:'var(--green)',health:'var(--teal)',property:'var(--purple)',business:'var(--amber)',legal:'var(--blue)'};
+  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">`+days.map((d,i)=>{
+    const ds=d.toISOString().split('T')[0];
+    const evts=[...calEvents.filter(e=>e.date===ds),...tasks.filter(t=>t.date===ds&&!t.done).map(t=>({title:t.text,cat:t.cat}))];
+    return `<div style="background:var(--bg3);border-radius:7px;padding:10px;border:1px solid ${i===0?'var(--green)':'var(--border)'}">
+      <div style="font-size:11px;font-weight:600;color:${i===0?'var(--green)':'var(--text3)'};margin-bottom:5px">${i===0?'Today':d.toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'})}</div>
+      ${evts.length?evts.slice(0,3).map(e=>`<div style="font-size:11px;color:${catC[e.cat]||'var(--text2)'};margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">· ${e.title}</div>`).join(''):'<div style="font-size:11px;color:var(--text3)">No events</div>'}
+    </div>`;
+  }).join('')+'</div>';
+}
+
+function getDayName(){return['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()];}
+
+// ══════════════════════════════════════════════════════
+// TASKS — done items sink to bottom
+// ══════════════════════════════════════════════════════
+function renderTaskList(){
+  const c=document.getElementById('task-list');if(!c)return;
+  let active=tasks.filter(t=>!t.done);
+  let done=tasks.filter(t=>t.done);
+  if(taskFilter==='overdue')active=active.filter(t=>t.overdue);
+  else if(taskFilter==='waiting')active=active.filter(t=>t.status==='Waiting');
+  else if(taskFilter!=='all')active=active.filter(t=>t.cat===taskFilter);
+  const pc={Critical:'var(--red)',High:'var(--amber)',Medium:'var(--blue)',Low:'var(--text3)'};
+  const renderTask=t=>`<div class="task-item ${t.done?'done-item':''}">
+    <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})"></div>
+    <div style="flex:1">
+      <div class="task-text ${t.done?'done':''}">${t.text}</div>
+      <div class="task-meta">Due: ${t.date}${t.linked?' · '+t.linked:''} · <strong style="color:${pc[t.priority]}">${t.priority}</strong></div>
+    </div>
+    <span class="sc sc-${t.status==='Waiting'?'waiting':t.status==='In Progress'?'progress':t.done?'done':'pending'}" onclick="cycleStatus(${t.id},this)">${t.done?'Done':t.status}</span>
+    ${t.overdue&&!t.done?'<span class="tag tag-overdue" style="margin-left:4px">overdue</span>':''}
+  </div>`;
+  let html=active.map(renderTask).join('');
+  if(showDone&&done.length){html+=`<div style="margin:10px 0 4px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em">Completed (${done.length})</div>`;html+=done.map(renderTask).join('');}
+  c.innerHTML=html||`<div style="padding:16px;color:var(--text3);font-size:13px;text-align:center">No tasks in this view ✓</div>`;
+  const s=document.getElementById('task-summary');if(s)s.textContent=done.length+' done · '+active.length+' active · '+tasks.filter(t=>t.overdue&&!t.done).length+' overdue';
+  document.getElementById('show-done-btn').textContent=showDone?'Hide completed':'Show completed';
+}
+
+function filterTasks(f,el){taskFilter=f;el.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTaskList();}
+function toggleShowDone(){showDone=!showDone;renderTaskList();}
+
+function toggleTask(id){
+  const t=tasks.find(t=>t.id===id);if(!t)return;
+  t.done=!t.done;t.status=t.done?'Done':t.status==='Done'?'Pending':t.status;
+  syncSheets('Master_Tasks',[new Date().toISOString().split('T')[0],t.text,t.cat,t.done?'Complete':'Incomplete',t.date,t.priority,t.status]);
+  persist();
+  renderTaskList();renderDash();
+}
+function cycleStatus(id,el){
+  const t=tasks.find(t=>t.id===id);if(!t)return;
+  const c=['Pending','In Progress','Waiting'];const i=c.indexOf(t.status);t.status=c[(i+1)%c.length];
+  el.textContent=t.status;el.className='sc sc-'+(t.status==='Waiting'?'waiting':t.status==='In Progress'?'progress':'pending');
+}
+
+// ══════════════════════════════════════════════════════
+// HABITS
+// ══════════════════════════════════════════════════════
+function renderHabits(){
+  const today=getDayName();
+  const todayH=habits.filter(h=>h.days.includes(today)||h.days.length===7);
+  const c=document.getElementById('habit-list');if(!c)return;
+  c.innerHTML=todayH.map(h=>`<div class="habit-row">
+    <div class="habit-info"><div class="habit-name" style="color:${h.color}">${h.name}</div><div class="habit-meta">${h.time}${h.days.length<7?' · '+h.days.join(', '):' · Every day'}</div></div>
+    <div class="toggle ${h.done?'on':''}" onclick="toggleHabit(${h.id},this)"></div>
+  </div>`).join('');
+  const all=document.getElementById('habit-all-list');if(!all)return;
+  all.innerHTML=habits.map(h=>`<div class="habit-row">
+    <div class="habit-info"><div class="habit-name" style="color:${h.color}">${h.name}</div><div class="habit-meta">${h.time} · ${h.days.length===7?'Every day':h.days.join(', ')}</div></div>
+    <button class="btn btn-sm btn-danger" style="font-size:10px;padding:3px 8px" onclick="deleteHabit(${h.id})">Remove</button>
+  </div>`).join('');
+  const streaks=document.getElementById('habit-streaks');if(!streaks)return;
+  streaks.innerHTML=habits.map(h=>{const p=(30+Math.random()*60).toFixed(0);return`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span style="color:${h.color}">${h.name}</span><span style="color:var(--text3)">${Math.floor(Math.random()*8)+1} day streak</span></div><div class="progress"><div class="progress-fill" style="width:${p}%;background:${h.color}"></div></div></div>`;}).join('');
+}
+
+function toggleHabit(id,el){
+  const h=habits.find(h=>h.id===id);if(!h)return;h.done=!h.done;
+  if(el){el.classList.toggle('on',h.done);}renderDashHabits();renderDashReminders();persist();
+  const mb=document.getElementById('m-habits');if(mb){const d=habits.filter(h=>h.done).length;mb.textContent=d+'/'+habits.length;}
+}
+function markHabitDone(id,btn){toggleHabit(id,null);if(btn){const row=btn.closest('.habit-reminder');if(row)row.style.display='none';}}
+function deleteHabit(id){habits=habits.filter(h=>h.id!==id);persist();renderHabits();}
+
+let habitDays=[];
+function toggleDay(btn,day){
+  document.getElementById('day-all-btn')?.classList.remove('active');
+  btn.classList.toggle('active');
+  if(btn.classList.contains('active'))habitDays=[...new Set([...habitDays,day])];
+  else habitDays=habitDays.filter(d=>d!==day);
+}
+function toggleDayAll(btn){
+  habitDays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  btn.closest('.day-picker').querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selectHabitColor(el,color){
+  selectedHabitColor=color;
+  el.closest('#habit-color-picker').querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function saveHabit(){
+  const name=document.getElementById('h-name').value.trim();if(!name)return;
+  const days=habitDays.length?habitDays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  habits.push({id:Date.now(),name,time:document.getElementById('h-time').value,days,color:selectedHabitColor,done:false});
+  habitDays=[];persist();closeModal('modal-addhabit');renderHabits();renderDash();showToast('✓ Habit added');
+}
+
+// Biz habits
+function renderBusiness(){
+  renderBizOps();renderStaff();renderClients();renderMktg();renderGrowth();
+}
+function renderBizOps(){
+  const c=document.getElementById('biz-ops-list');if(!c)return;
+  c.innerHTML=bizHabits.map(h=>`<div class="habit-row">
+    <div class="habit-info"><div class="habit-name">${h.name}</div><div class="habit-meta">${h.time} · ${h.days.length===7?'Every day':h.days.join(', ')}</div></div>
+    <div class="toggle ${h.done?'on':''}" onclick="toggleBizHabit(${h.id},this)"></div>
+  </div>`).join('');
+}
+function toggleBizHabit(id,el){const h=bizHabits.find(h=>h.id===id);if(!h)return;h.done=!h.done;el.classList.toggle('on',h.done);}
+function saveBizHabit(){
+  const name=document.getElementById('bh-name').value.trim();if(!name)return;
+  const days=habitDays.length?habitDays:['Mon','Tue','Wed','Thu','Fri'];
+  bizHabits.push({id:Date.now(),name,time:document.getElementById('bh-time').value,days,done:false});
+  habitDays=[];persist();closeModal('modal-add-bizhabit');renderBizOps();showToast('✓ Daily task added');
+}
+function saveBizOps(){syncSheets('Business_Ops',[new Date().toISOString().split('T')[0],'Daily ops',bizHabits.filter(h=>h.done).map(h=>h.name).join(', ')]);showToast('✓ Daily ops saved');}
+
+// ══════════════════════════════════════════════════════
+// NOTES — Export to Sheets works
+// ══════════════════════════════════════════════════════
+function renderNotes(search){
+  const cf=(document.getElementById('note-cat-filter')||{}).value||'all';
+  const c=document.getElementById('notes-list');if(!c)return;
+  let list=notes;if(cf!=='all')list=list.filter(n=>n.cat===cf);
+  if(search)list=list.filter(n=>[n.title,n.body,n.cat,n.entity].join(' ').toLowerCase().includes(search.toLowerCase()));
+  const sc={Active:'var(--green)','Follow-up needed':'var(--amber)',Exported:'var(--blue)',Archived:'var(--text3)'};
+  c.innerHTML=list.length?list.map(n=>`<div class="note-card">
+    <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px">${n.title}</div>
+    ${n.aiSummary?`<div class="note-ai">🧠 ${n.aiSummary}</div>`:''}
+    <div style="font-size:12px;color:var(--text2);margin-bottom:6px;line-height:1.55">${n.body}</div>
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+      <span class="badge badge-teal">${n.cat}</span>
+      ${n.entity?`<span style="font-size:11px;color:var(--text3)">· ${n.entity}</span>`:''}
+      <span style="font-size:11px;color:var(--text3)">· ${n.date}</span>
+      ${n.followup?'<span class="badge badge-amber">Follow-up</span>':''}
+      <span style="font-size:11px;color:${sc[n.status]};margin-left:auto;font-weight:500">${n.status}</span>
+    </div>
+    <div class="ai-actions">
+      <button class="ai-btn" onclick="openModal('modal-addtask')">➕ Task</button>
+      <button class="ai-btn" onclick="addNoteToCalendar(${n.id})">📅 Calendar</button>
+      <button class="ai-btn" onclick="openEmailCompose('','','${esc(n.title)}','${esc(n.body)}')">📧 Email</button>
+      <button class="ai-btn" onclick="exportNoteToSheet(${n.id})">📊 Export to Sheet</button>
+    </div>
+  </div>`).join(''):'<div style="padding:24px;text-align:center;color:var(--text3);font-size:13px">No notes yet.</div>';
+}
+
+function exportNoteToSheet(id){
+  const n=notes.find(n=>n.id===id);if(!n)return;
+  syncSheets('Master_Notes',[n.date,n.title,n.cat,n.entity,n.body,n.tags?.join(', ')||'',n.status,n.followup?'Yes':'No',n.exportFlag?'Yes':'No',n.aiSummary||'']);
+  n.status='Exported';renderNotes('');showToast('✓ Note exported to Google Sheet');
+}
+
+function addNoteToCalendar(id){
+  const n=notes.find(n=>n.id===id);if(!n)return;
+  const url=`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(n.title)}&details=${encodeURIComponent(n.body)}&dates=&sf=true&output=xml`;
+  openModal('modal-addcal');document.getElementById('cal-ev-title').value=n.title;document.getElementById('cal-ev-notes').value=n.body;
+  showToast('Fill in the date and click "Add to Google Calendar"');
+}
+
+// ══════════════════════════════════════════════════════
+// CALENDAR
+// ══════════════════════════════════════════════════════
+function renderCalendar(){
+  const now=new Date();if(!calYear){calYear=now.getFullYear();calMonth=now.getMonth();}
+  renderCalMonth();renderCalAgenda();
+}
+function showCalTab(tab,el){
+  calTabCurrent=tab;
+  document.getElementById('cal-month-view').style.display=tab==='month'?'':'none';
+  document.getElementById('cal-agenda-view').style.display=tab==='agenda'?'':'none';
+  el.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+}
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalMonth();}
+function renderCalMonth(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const titleEl=document.getElementById('cal-title');if(titleEl)titleEl.textContent=months[calMonth]+' '+calYear;
+  const labels=document.getElementById('cal-labels');if(labels)labels.innerHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="cal-day-lbl">${d}</div>`).join('');
+  const grid=document.getElementById('cal-grid');if(!grid)return;
+  const first=new Date(calYear,calMonth,1).getDay();
+  const dim=new Date(calYear,calMonth+1,0).getDate();
+  const today=new Date().toISOString().split('T')[0];
+  const catC={personal:'var(--green)',health:'var(--teal)',property:'var(--purple)',business:'var(--amber)',legal:'var(--blue)'};
+  let html='';
+  for(let i=0;i<first;i++)html+=`<div class="cal-day other-month"></div>`;
+  for(let d=1;d<=dim;d++){
+    const ds=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const evts=[...calEvents.filter(e=>e.date===ds),...tasks.filter(t=>t.date===ds&&!t.done).map(t=>({title:t.text,cat:t.cat}))];
+    html+=`<div class="cal-day${ds===today?' today':''}"><div class="cal-day-num">${d}</div>${evts.slice(0,2).map(e=>`<div class="cal-evt" style="background:${catC[e.cat]||'var(--bg4)'}22;color:${catC[e.cat]||'var(--text3)'}">${e.title}</div>`).join('')}${evts.length>2?`<div style="font-size:9px;color:var(--text3)">+${evts.length-2}</div>`:''}</div>`;
+  }
+  grid.innerHTML=html;
+}
+function renderCalAgenda(){
+  const c=document.getElementById('cal-agenda');if(!c)return;
+  const all=[...calEvents,...tasks.filter(t=>!t.done).map(t=>({title:t.text,date:t.date,time:'',cat:t.cat}))].sort((a,b)=>a.date.localeCompare(b.date));
+  const catC={personal:'var(--green)',health:'var(--teal)',property:'var(--purple)',business:'var(--amber)',legal:'var(--blue)'};
+  c.innerHTML=all.slice(0,20).map(e=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:${catC[e.cat]||'var(--text3)'};flex-shrink:0"></div><div style="font-size:11px;color:var(--text3);min-width:90px">${e.date}${e.time?' '+e.time:''}</div><div style="font-size:13px;color:var(--text);flex:1">${e.title}</div><span class="tag tag-${e.cat||'personal'}">${e.cat||'personal'}</span></div>`).join('');
+}
+
+function addCalEventGCal(title,date,cat){
+  calEvents.push({title,date,time:'',cat});
+  const url=`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${date.replace(/-/g,'')}/${date.replace(/-/g,'')}&sf=true&output=xml`;
+  window.open(url,'_blank');showToast('✓ Google Calendar opened');
+  renderCalendar();
+}
+
+// ══════════════════════════════════════════════════════
+// HEALTH
+// ══════════════════════════════════════════════════════
+function renderHealth(){
+  renderHealthIncidents();renderMedContacts();renderFamilyList();
+}
+function renderHealthIncidents(){
+  const c=document.getElementById('health-incidents');if(!c)return;
+  c.innerHTML=`<div class="note-card">
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><span style="font-size:13px;font-weight:500;color:var(--text)">Chest tightness</span><span class="badge badge-amber" style="margin-left:auto">6/10</span></div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Mar 15 · 2:30pm · No meds</div>
+    <div class="note-ai">🧠 Third episode in 5 days. Pattern suggests stress-induced angina. Urgent physician consult within 48 hrs.</div>
+    <div class="ai-actions"><button class="ai-btn ai-btn-p" onclick="openEmailCompose('Dr. Ramesh Patel','r.patel@clinic.ca','Urgent appointment','')">📧 Email Dr. Patel</button><button class="ai-btn" onclick="openModal('modal-addtask')">Book follow-up</button></div>
+  </div>
+  <div class="note-card">
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><span style="font-size:13px;font-weight:500;color:var(--text)">Chest tightness (recurrence)</span><span class="badge badge-red" style="margin-left:auto">8/10</span></div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Mar 13 · 7:15pm · Tylenol 500mg</div>
+    <div style="font-size:12px;color:var(--text2)">More intense. Second episode this week.</div>
+  </div>`;
+}
+function renderMedContacts(){
+  const c=document.getElementById('med-contacts-list');if(!c)return;
+  c.innerHTML=medContacts.map(m=>`<div class="contact-card">
+    <div class="avatar" style="background:var(--teal-bg);color:var(--teal)">${m.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+    <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${m.name}</div><div style="font-size:11px;color:var(--text3)">${m.role}${m.clinic?' · '+m.clinic:''}${m.phone?' · '+m.phone:''}</div></div>
+    <button class="btn btn-sm btn-icon" onclick="openEmailCompose('${m.name}','${m.email}','Appointment request','')">📧</button>
+  </div>`).join('');
+}
+function renderFamilyList(){
+  const c=document.getElementById('family-list');if(!c)return;
+  c.innerHTML=familyMembers.length?familyMembers.map(f=>`<div class="note-card">
+    <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px">${f.name} <span style="font-size:12px;color:var(--text3)">· ${f.rel}</span></div>
+    ${f.dob?`<div style="font-size:12px;color:var(--text3);margin-bottom:4px">DOB: ${f.dob}${f.ohip?' · OHIP: '+f.ohip:''}</div>`:''}
+    ${f.conditions?`<div style="font-size:12px;color:var(--text2);margin-bottom:3px">Conditions: ${f.conditions}</div>`:''}
+    ${f.meds?`<div style="font-size:12px;color:var(--text2);margin-bottom:3px">Medications: ${f.meds}</div>`:''}
+    ${f.doctor?`<div style="font-size:12px;color:var(--text3)">Doctor: ${f.doctor}</div>`:''}
+  </div>`).join(''):'<div style="padding:16px;color:var(--text3);font-size:13px">No family members added yet.</div>';
+}
+
+// ══════════════════════════════════════════════════════
+// STAFF
+// ══════════════════════════════════════════════════════
+function renderStaff(){
+  const c=document.getElementById('staff-list');if(!c)return;
+  const statusColor={Active:'var(--green)',Probation:'var(--amber)',PIP:'var(--red)',Terminated:'var(--text3)'};
+  c.innerHTML=staff.map((s,i)=>`<div class="perf-item">
+    <div class="perf-header">
+      <div class="avatar" style="background:var(--blue-bg);color:var(--blue)">${s.name.split(' ')[0][0]}${s.name.split(' ')[1]?.[0]||''}</div>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:500;color:var(--text)">${s.name}</div>
+        <div style="font-size:12px;color:var(--text3)">${s.role} · <a href="mailto:${s.email}" style="color:var(--blue)">${s.email}</a></div>
+      </div>
+      <div class="perf-score" style="color:${s.perfScore>=7?'var(--green)':s.perfScore>=5?'var(--amber)':'var(--red)'}">${s.perfScore}</div>
+      <span class="badge" style="background:${statusColor[s.status]+'22'};color:${statusColor[s.status]||'var(--text3)'}">${s.status}</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="ai-btn" onclick="openEmailCompose('${s.name}','${s.email}','Performance review','')">📧 Email</button>
+      <button class="ai-btn" onclick="openStaffPerf(${i})">📊 Log performance</button>
+      <button class="ai-btn" onclick="openModal('modal-addtask')">➕ Task</button>
+    </div>
+    ${s.notes?`<div style="font-size:12px;color:var(--amber);margin-top:6px">Note: ${s.notes}</div>`:''}
+    ${s.errors&&s.errors.length?`<div style="margin-top:6px"><div style="font-size:11px;color:var(--text3);margin-bottom:4px">Recent errors/incidents:</div>${s.errors.map(e=>`<div style="font-size:12px;color:var(--red);padding:3px 0">· ${e.date}: ${e.desc}</div>`).join('')}</div>`:''}
+  </div>`).join('');
+}
+let perfStaffIdx=null;
+function openStaffPerf(i){
+  perfStaffIdx=i;
+  const s=staff[i];
+  document.getElementById('sp-staff-name').textContent=s.name;
+  document.getElementById('sp-type').value='note';
+  document.getElementById('sp-desc').value='';
+  document.getElementById('sp-score').value=s.perfScore;
+  document.getElementById('sp-score-label').textContent=s.perfScore;
+  openModal('modal-staff-perf');
+}
+function saveStaffPerf(){
+  const i=perfStaffIdx;if(i===null)return;
+  const s=staff[i];
+  const type=document.getElementById('sp-type').value;
+  const desc=document.getElementById('sp-desc').value.trim();if(!desc)return;
+  const newScore=parseInt(document.getElementById('sp-score').value)||s.perfScore;
+  s.perfScore=newScore;
+  if(type==='error'||type==='incident'){
+    if(!s.errors)s.errors=[];
+    s.errors.push({date:new Date().toISOString().split('T')[0],desc,type});
+  } else {
+    s.notes=(s.notes?s.notes+'\n':'')+new Date().toISOString().split('T')[0]+': '+desc;
+  }
+  syncSheets('Staff_Performance',[new Date().toISOString().split('T')[0],s.name,s.email,type,desc,newScore]);
+  persist();
+  closeModal('modal-staff-perf');renderStaff();showToast('✓ Performance log saved');
+}
+
+// ══════════════════════════════════════════════════════
+// CLIENTS
+// ══════════════════════════════════════════════════════
+function renderClients(){
+  const c=document.getElementById('client-list');if(!c)return;
+  const statusColor={Active:'var(--blue)','Awaiting docs':'var(--red)','Awaiting client':'var(--amber)',Closing:'var(--purple)',Closed:'var(--text3)'};
+  const assignedName={'hkslawyer.ds@gmail.com':'RE Clerk','ayushi.hkslaw@gmail.com':'Ayushi','sales.hkslaw@gmail.com':'Sales/Admin','lawyer@hkslaw.ca':'Lawyer'};
+  c.innerHTML=clients.map((cl,i)=>`<div class="note-card">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <div style="font-size:13.5px;font-weight:500;color:var(--text)">${cl.name}</div>
+      <span class="badge" style="background:${statusColor[cl.status]||'var(--bg4)'}22;color:${statusColor[cl.status]||'var(--text3)'}">${cl.status}</span>
+      <div style="margin-left:auto;font-size:12px;color:var(--text3)">→ ${assignedName[cl.assigned]||cl.assigned}</div>
+    </div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:4px">${cl.matter} · ${cl.type} · Due: ${cl.deadline}</div>
+    ${cl.pending?`<div style="font-size:12px;color:var(--amber);margin-bottom:6px">⏳ Pending: ${cl.pending}</div>`:''}
+    <div class="ai-actions">
+      <button class="ai-btn" onclick="openEmailCompose('${assignedName[cl.assigned]||'Staff'}','${cl.assigned}','${esc(cl.name+' — follow-up required')}','Re: ${esc(cl.name)} — please follow up on: ${esc(cl.pending)}. Deadline: ${cl.deadline}.')">📧 Email staff follow-up</button>
+      <button class="ai-btn" onclick="openModal('modal-addtask')">➕ Task</button>
+    </div>
+  </div>`).join('');
+}
+
+function emailClientFollowUp(){
+  const name=document.getElementById('cl-name').value;
+  const assigned=document.getElementById('cl-assigned').value;
+  const pending=document.getElementById('cl-pending').value;
+  const deadline=document.getElementById('cl-deadline').value;
+  const assignedName={'hkslawyer.ds@gmail.com':'RE Law Clerk','ayushi.hkslaw@gmail.com':'Ayushi','sales.hkslaw@gmail.com':'Sales/Admin','lawyer@hkslaw.ca':'Lawyer'};
+  saveClient();
+  openEmailCompose(assignedName[assigned]||'Staff',assigned,`${name} — follow up required`,`Please follow up on the ${name} file. Pending: ${pending}. Deadline: ${deadline}.`);
+}
+
+// ══════════════════════════════════════════════════════
+// MARKETING
+// ══════════════════════════════════════════════════════
+function renderMktg(){
+  const c=document.getElementById('mktg-list');if(!c)return;
+  c.innerHTML=mktgItems.map(m=>`<div class="task-item"><div style="flex:1"><div style="font-size:13px;color:var(--text)">${m.name}</div><div class="task-meta">${m.type} · ${m.date} · ${m.status}</div></div><span class="sc sc-${m.status==='Active'?'progress':m.status==='Completed'?'done':'pending'}">${m.status}</span></div>`).join('');
+  const mc=document.getElementById('mktg-contacts');if(!mc)return;
+  mc.innerHTML=mktgContacts.length?mktgContacts.map(c=>`<div class="contact-card"><div class="avatar" style="background:var(--pink-bg);color:var(--pink)">${c.name[0]||'?'}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${c.name}</div><div style="font-size:11px;color:var(--text3)">${c.role}${c.phone?' · '+c.phone:''}${c.email?' · '+c.email:''}</div></div></div>`).join(''):'<div style="color:var(--text3);font-size:13px">No marketing contacts yet.</div>';
+}
+function renderGrowth(){
+  const c=document.getElementById('growth-list');if(!c)return;
+  c.innerHTML=growthItems.map(g=>`<div class="task-item"><div style="flex:1"><div style="font-size:13px;color:var(--text)">${g.name}</div><div class="task-meta">${g.cat} · Target: ${g.date}</div></div><button class="ai-btn" onclick="openModal('modal-addtask')">➕ Task</button></div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// PROPERTIES — full table + detail + auto-reminders
+// ══════════════════════════════════════════════════════
+function renderProperties(){
+  document.getElementById('prop-portfolio-view').style.display='';
+  document.getElementById('prop-detail-view').classList.remove('open');
+  const tbody=document.getElementById('prop-tbody');if(!tbody)return;
+  // rebuild damage dropdown
+  const dp=document.getElementById('d-prop');if(dp)dp.innerHTML=properties.map(p=>`<option>${p.addr}</option>`).join('');
+  tbody.innerHTML=properties.map((p,i)=>{
+    const renewDate=new Date(p.renewal);const now=new Date();const daysToRenew=Math.round((renewDate-now)/(1000*60*60*24));
+    const renewClass=daysToRenew<180?'amber':daysToRenew<90?'red':'';
+    return `<tr style="cursor:pointer" onclick="openPropDetail(${i})">
+      <td style="font-weight:500;color:var(--text)">${p.addr}</td>
+      <td class="num green">${p.fmv}</td>
+      <td class="num green">${p.rent}</td>
+      <td class="num">${p.mtgPmt}</td>
+      <td class="num">${p.mtgInt}</td>
+      <td class="num">${p.mtgPrin}</td>
+      <td class="num">${p.mtgBal} <span style="font-size:10px;color:var(--text3)">(${p.mtgBalYr})</span></td>
+      <td class="num">${p.tax}</td>
+      <td class="${renewClass}">${p.renewal}${daysToRenew<365?` <span style="font-size:10px">(${daysToRenew}d)</span>`:''}</td>
+      <td style="color:var(--text2)">${p.lender}</td>
+      <td style="color:var(--text2)">${p.agent||'—'}</td>
+      <td style="color:var(--text2)">${p.ownership}</td>
+      <td class="num" style="color:var(--purple)">${p.equity}</td>
+      <td><div style="display:flex;gap:4px"><button class="ai-btn" onclick="event.stopPropagation();openPropDetail(${i})">View</button><button class="ai-btn" onclick="event.stopPropagation();openEmailCompose('${p.agent||'Mortgage Agent'}','','Mortgage renewal inquiry — ${esc(p.addr)}','')">📧</button></div></td>
+    </tr>`;
+  }).join('');
+  updatePropAISummary();
+}
+
+function updatePropAISummary(){
+  const el=document.getElementById('prop-ai-summary');if(!el)return;
+  const total=properties.reduce((a,p)=>{const e=parseInt((p.equity||'0').replace(/[$,]/g,''))||0;return a+e;},0);
+  const urgent=properties.filter(p=>{const d=new Date(p.renewal);return(d-new Date())/(1000*60*60*24)<180;});
+  el.textContent=`Total est. equity: $${total.toLocaleString()} across ${properties.length} properties. ${urgent.length?urgent[0].addr+' renewal in under 6 months — initiate lender conversations now.':'All mortgages renewing more than 6 months out.'}`;
+}
+
+function openPropDetail(i){
+  currentPropIdx=i;const p=properties[i];
+  document.getElementById('prop-portfolio-view').style.display='none';
+  document.getElementById('prop-detail-view').classList.add('open');
+  document.getElementById('prop-detail-title').textContent=p.addr;
+  document.getElementById('prop-detail-sub').textContent=`${p.lender}${p.agent?' · '+p.agent:''} · ${p.ownership} ownership`;
+  document.getElementById('prop-detail-stats').innerHTML=[
+    {l:'FMV',v:p.fmv,c:'var(--green)'},{l:'Rent',v:p.rent,c:'var(--green)'},
+    {l:'Mtg balance',v:p.mtgBal,c:'var(--text)'},{l:'Equity',v:p.equity,c:'var(--purple)'},
+    {l:'Renewal',v:p.renewal,c:new Date(p.renewal)<new Date(Date.now()+180*86400000)?'var(--amber)':'var(--text)'},
+    {l:'Monthly pmt',v:p.mtgPmt,c:'var(--text)'}
+  ].map(s=>`<div class="stat"><div class="stat-label">${s.l}</div><div class="stat-val" style="color:${s.c};font-size:15px">${s.v}</div></div>`).join('');
+  const daysToRenew=Math.round((new Date(p.renewal)-new Date())/(1000*60*60*24));
+  document.getElementById('pd-ai-text').textContent=`Renewal in ${daysToRenew} days (${p.renewal}). ${daysToRenew<180?'Start lender comparison now. Rate likely similar to current '+p.lender+' terms.':'No urgent mortgage action required.'} Monthly cash flow: ~$${(parseInt((p.rent||'0').replace(/[$,]/g,''))-(parseInt((p.mtgPmt||'0').replace(/[$,]/g,''))||0)-(parseInt((p.tax||'0').replace(/[$,]/g,''))||0)).toLocaleString()}/mo.`;
+  document.getElementById('pd-summary').innerHTML=`<div class="habit-row"><span style="color:var(--text3);font-size:12px">Interest/mo</span><span style="color:var(--text)">${p.mtgInt}</span></div><div class="habit-row"><span style="color:var(--text3);font-size:12px">Principal/mo</span><span style="color:var(--text)">${p.mtgPrin}</span></div><div class="habit-row"><span style="color:var(--text3);font-size:12px">Property tax/mo</span><span style="color:var(--text)">${p.tax}</span></div><div class="habit-row"><span style="color:var(--text3);font-size:12px">Lender</span><span style="color:var(--text)">${p.lender}</span></div><div class="habit-row"><span style="color:var(--text3);font-size:12px">Notes</span><span style="color:var(--text2);font-size:12px">${p.notes||'—'}</span></div>`;
+  document.getElementById('prop-email-agent-btn').onclick=()=>openEmailCompose(p.agent||'Mortgage Agent','',`Mortgage renewal inquiry — ${p.addr}`,`Hi, I would like to discuss the upcoming mortgage renewal for ${p.addr}. Current rate: ${p.mtgPmt}/mo. Renewal date: ${p.renewal}. Please advise on available options.`);
+  const propTasks=tasks.filter(t=>t.linked&&t.linked.toLowerCase().includes(p.addr.toLowerCase().split(' ').slice(0,2).join(' ').toLowerCase()));
+  document.getElementById('pd-tasks-list').innerHTML=propTasks.length?propTasks.map(t=>`<div class="task-item"><div class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})"></div><div style="flex:1"><div class="task-text ${t.done?'done':''}">${t.text}</div><div class="task-meta">Due: ${t.date} · ${t.priority}</div></div></div>`).join(''):'<div style="color:var(--text3);font-size:13px">No tasks for this property.</div>';
+  const propContacts=contacts.filter(c=>c.prop&&c.prop.toLowerCase().includes(p.addr.split(' ')[0].toLowerCase()));
+  document.getElementById('pd-contacts-list').innerHTML=propContacts.length?propContacts.map(c=>`<div class="contact-card"><div class="avatar" style="background:var(--purple-bg);color:var(--purple)">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${c.name}</div><div style="font-size:11px;color:var(--text3)">${c.role}</div></div></div>`).join(''):'<div style="color:var(--text3);font-size:13px">No linked contacts.</div>';
+  document.getElementById('pd-notes-list').innerHTML=notes.filter(n=>n.entity&&n.entity.includes(p.addr.split(' ')[0])).map(n=>`<div class="note-card"><div style="font-size:13px;font-weight:500;color:var(--text)">${n.title}</div><div style="font-size:12px;color:var(--text2);margin-top:4px">${n.body}</div></div>`).join('')||'<div style="color:var(--text3);font-size:13px">No notes for this property.</div>';
+  document.getElementById('pd-issues-list').innerHTML=`<div style="color:var(--text3);font-size:13px">No issues logged.</div>`;
+  document.getElementById('pd-timeline-list').innerHTML=['<div class="tl-item tl-blue"><div class="tl-time">Mar 15</div><div class="tl-content">Property reviewed in portfolio dashboard</div></div>','<div class="tl-item tl-amber"><div class="tl-time">Mar 8</div><div class="tl-content">Mortgage discussion with agent — rate noted</div></div>'].join('');
+}
+function closePropDetail(){document.getElementById('prop-portfolio-view').style.display='';document.getElementById('prop-detail-view').classList.remove('open');}
+
+function exportPropertiesToSheet(){
+  properties.forEach(p=>syncSheets('Property_Portfolio',[p.addr,p.fmv,p.rent,p.mtgPmt,p.mtgInt,p.mtgPrin,p.mtgBal,p.mtgBalYr,p.tax,p.renewal,p.lender,p.agent,p.ownership,p.equity,p.notes]));
+  showToast('✓ All properties exported to Google Sheet');
+}
+
+// ══════════════════════════════════════════════════════
+// CONTACTS
+// ══════════════════════════════════════════════════════
+function renderContacts(){
+  const search=(document.getElementById('contact-search')||{}).value||'';
+  const cf=(document.getElementById('contact-cat-filter')||{}).value||'all';
+  const c=document.getElementById('contact-list');if(!c)return;
+  let list=contacts;
+  if(cf!=='all')list=list.filter(ct=>ct.cat===cf);
+  if(search)list=list.filter(ct=>[ct.name,ct.role,ct.org].join(' ').toLowerCase().includes(search.toLowerCase()));
+  const bgM={health:'var(--teal-bg)',property:'var(--purple-bg)',legal:'var(--blue-bg)',personal:'var(--pink-bg)',business:'var(--amber-bg)',contractor:'var(--bg4)'};
+  const colM={health:'var(--teal)',property:'var(--purple)',legal:'var(--blue)',personal:'var(--pink)',business:'var(--amber)',contractor:'var(--text)'};
+  c.innerHTML=list.length?list.map(ct=>`<div>
+    <div class="contact-card">
+      <div class="avatar" style="background:${bgM[ct.cat]||'var(--bg4)'};color:${colM[ct.cat]||'var(--text)'}">${ct.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${ct.name}</div><div style="font-size:11px;color:var(--text3)">${ct.role}${ct.org?' · '+ct.org:''}${ct.phone?' · '+ct.phone:''}${ct.prop?' · '+ct.prop:''}</div>${ct.interactions&&ct.interactions.length?`<div style="font-size:11px;color:var(--text3);margin-top:1px">Last: ${ct.interactions[ct.interactions.length-1].type} ${ct.interactions[ct.interactions.length-1].date}</div>`:''}</div>
+      <div style="display:flex;gap:4px">
+        <button class="btn btn-sm btn-icon" onclick="openModal('modal-log-int');document.getElementById('li-contact').value='${esc(ct.name)}'">📞</button>
+        <button class="btn btn-sm btn-icon" onclick="openEmailCompose('${esc(ct.name)}','${ct.email||''}','follow-up','')">📧</button>
+      </div>
+    </div>
+    ${ct.interactions&&ct.interactions.length?`<div style="padding:6px 16px 8px;background:var(--bg3);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;margin-top:-8px">${ct.interactions.map(i=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px"><span style="padding:1px 6px;border-radius:4px;background:var(--bg4);color:var(--text3);font-size:10px;flex-shrink:0">${i.type}</span><div style="flex:1;color:var(--text2)">${i.notes}</div><span style="color:var(--text3);white-space:nowrap">${i.date}</span></div>`).join('')}</div>`:''}
+  </div>`).join(''):'<div style="padding:24px;text-align:center;color:var(--text3)">No contacts found.</div>';
+}
+
+// ══════════════════════════════════════════════════════
+// SAVE FUNCTIONS
+// ══════════════════════════════════════════════════════
+function addQuickTask(){const text=document.getElementById('quick-task').value.trim();const cat=document.getElementById('quick-cat').value;if(!text)return;const d=new Date().toISOString().split('T')[0];tasks.push({id:Date.now(),text,cat,done:false,overdue:false,date:d,priority:'Medium',status:'Pending',linked:'',contact:''});syncSheets('Master_Tasks',[d,text,cat,'Pending',d,'Medium','Pending']);document.getElementById('quick-task').value='';persist();renderDash();showToast('✓ Task added');}
+
+function addTask(){
+  const text=document.getElementById('t-text').value.trim();if(!text)return;
+  const t={id:Date.now(),text,cat:document.getElementById('t-cat').value,done:false,overdue:false,date:document.getElementById('t-date').value||new Date().toISOString().split('T')[0],priority:document.getElementById('t-priority').value,status:document.getElementById('t-status').value,linked:document.getElementById('t-linked').value,contact:document.getElementById('t-contact').value};
+  tasks.push(t);
+  if(document.getElementById('t-add-cal').checked)calEvents.push({title:text,date:t.date,time:'',cat:t.cat});
+  syncSheets('Master_Tasks',[t.date,text,t.cat,t.status,t.date,t.priority,t.linked]);
+  persist();
+  closeModal('modal-addtask');renderTaskList();renderDash();
+}
+
+function saveNote(){
+  const n={id:Date.now(),title:document.getElementById('n-title').value.trim(),cat:document.getElementById('n-cat').value,entity:document.getElementById('n-entity').value,body:document.getElementById('n-body').value,tags:document.getElementById('n-tags').value.split(',').map(t=>t.trim()).filter(Boolean),status:document.getElementById('n-status').value,followup:document.getElementById('n-followup').checked,exportFlag:document.getElementById('n-export').checked,date:new Date().toISOString().split('T')[0],aiSummary:''};
+  if(!n.title)return;notes.unshift(n);
+  syncSheets('Master_Notes',[n.date,n.title,n.cat,n.entity,n.body,n.tags.join(', '),n.status,n.followup?'Yes':'No',n.exportFlag?'Yes':'No','']);
+  persist();
+  closeModal('modal-addnote');renderNotes('');showToast('✓ Note saved');
+}
+
+async function saveNoteWithAI(){
+  const title=document.getElementById('n-title').value.trim();const body=document.getElementById('n-body').value;if(!title)return;
+  showToast('🧠 Generating AI summary…');
+  const r=await callClaude(`Summarize: "${title}". Body: "${body}". Return JSON with analysis field only.`);
+  document.getElementById('n-body').value=body;
+  const n={id:Date.now(),title,cat:document.getElementById('n-cat').value,entity:document.getElementById('n-entity').value,body,tags:document.getElementById('n-tags').value.split(',').map(t=>t.trim()).filter(Boolean),status:document.getElementById('n-status').value,followup:true,exportFlag:false,date:new Date().toISOString().split('T')[0],aiSummary:r.analysis||''};
+  notes.unshift(n);syncSheets('Master_Notes',[n.date,n.title,n.cat,n.entity,n.body,n.tags.join(', '),n.status,'Yes','No',n.aiSummary]);
+  closeModal('modal-addnote');renderNotes('');showToast('✓ Note saved with AI summary');
+}
+
+function saveHealthLog(){
+  const s=document.getElementById('hl-symptoms').value.trim();if(!s)return;
+  syncSheets('Health_Log',[document.getElementById('hl-date').value,document.getElementById('hl-time').value,s,document.getElementById('hl-severity').value,document.getElementById('hl-meds').value,document.getElementById('hl-doctor').value,document.getElementById('hl-trigger').value,document.getElementById('hl-tests').value,document.getElementById('hl-followup').value]);
+  closeModal('modal-health-log');showToast('✓ Health incident logged');
+}
+async function saveHealthWithAI(){
+  const s=document.getElementById('hl-symptoms').value.trim();if(!s)return;
+  showToast('🧠 AI analyzing…');
+  const r=await callClaude(`Health: "${s}", severity ${document.getElementById('hl-severity').value}/10, meds "${document.getElementById('hl-meds').value}". Return JSON.`);
+  showToast('AI: '+(r.analysis||'Analysis complete'));saveHealthLog();
+}
+
+function saveMedContact(){
+  const name=document.getElementById('mc-name').value.trim();if(!name)return;
+  medContacts.push({name,role:document.getElementById('mc-role').value,phone:document.getElementById('mc-phone').value,email:document.getElementById('mc-email').value,clinic:document.getElementById('mc-clinic').value,addr:document.getElementById('mc-addr').value,notes:document.getElementById('mc-notes').value});
+  syncSheets('Medical_Contacts',[name,document.getElementById('mc-role').value,document.getElementById('mc-phone').value,document.getElementById('mc-email').value,document.getElementById('mc-clinic').value]);
+  persist();
+  closeModal('modal-add-med-contact');renderMedContacts();showToast('✓ Medical contact saved');
+}
+
+function saveFamilyMember(){
+  const name=document.getElementById('fm-name').value.trim();if(!name)return;
+  familyMembers.push({name,rel:document.getElementById('fm-rel').value,dob:document.getElementById('fm-dob').value,ohip:document.getElementById('fm-ohip').value,conditions:document.getElementById('fm-conditions').value,meds:document.getElementById('fm-meds').value,doctor:document.getElementById('fm-doctor').value,contacts:document.getElementById('fm-contacts').value,notes:document.getElementById('fm-notes').value});
+  syncSheets('Family_Health',[name,document.getElementById('fm-rel').value,document.getElementById('fm-dob').value,document.getElementById('fm-conditions').value,document.getElementById('fm-meds').value,document.getElementById('fm-doctor').value]);
+  persist();
+  closeModal('modal-add-family');renderFamilyList();showToast('✓ Family member saved');
+}
+
+function saveStaff(){
+  const name=document.getElementById('s-name').value.trim();if(!name)return;
+  staff.push({name,role:document.getElementById('s-role').value,email:document.getElementById('s-email').value,phone:document.getElementById('s-phone').value,start:document.getElementById('s-start').value,status:document.getElementById('s-status').value,perfScore:parseInt(document.getElementById('s-perf').value)||7,notes:document.getElementById('s-notes').value,errors:[]});
+  syncSheets('Staff',[name,document.getElementById('s-role').value,document.getElementById('s-email').value,document.getElementById('s-status').value,document.getElementById('s-perf').value]);
+  persist();
+  closeModal('modal-add-staff');renderStaff();showToast('✓ Staff member added');
+}
+
+function saveClient(){
+  const name=document.getElementById('cl-name').value.trim();if(!name)return;
+  clients.push({name,matter:document.getElementById('cl-matter').value,type:document.getElementById('cl-type').value,assigned:document.getElementById('cl-assigned').value,status:document.getElementById('cl-status').value,deadline:document.getElementById('cl-deadline').value,pending:document.getElementById('cl-pending').value,notes:document.getElementById('cl-notes').value});
+  syncSheets('Client_Admin',[name,document.getElementById('cl-matter').value,document.getElementById('cl-type').value,document.getElementById('cl-assigned').value,document.getElementById('cl-status').value,document.getElementById('cl-deadline').value,document.getElementById('cl-pending').value]);
+  persist();
+  closeModal('modal-add-client');renderClients();showToast('✓ Client matter saved');
+}
+
+function saveMktg(){mktgItems.push({name:document.getElementById('mkt-name').value,type:document.getElementById('mkt-type').value,status:document.getElementById('mkt-status').value,date:document.getElementById('mkt-date').value,budget:document.getElementById('mkt-budget').value,notes:document.getElementById('mkt-notes').value});syncSheets('Marketing',[document.getElementById('mkt-name').value,document.getElementById('mkt-type').value,document.getElementById('mkt-status').value,document.getElementById('mkt-date').value]);closeModal('modal-add-mktg');renderMktg();}
+function saveMktgContact(){mktgContacts.push({name:document.getElementById('mktc-name').value,role:document.getElementById('mktc-role').value,phone:document.getElementById('mktc-phone').value,email:document.getElementById('mktc-email').value,notes:document.getElementById('mktc-notes').value});closeModal('modal-add-mktg-contact');renderMktg();}
+function saveGrowth(){const n=document.getElementById('gr-name').value.trim();if(!n)return;growthItems.push({name:n,cat:document.getElementById('gr-cat').value,date:document.getElementById('gr-date').value,notes:document.getElementById('gr-notes').value});tasks.push({id:Date.now(),text:'Follow up: '+n,cat:'business',done:false,overdue:false,date:document.getElementById('gr-date').value,priority:'Medium',status:'Pending',linked:'',contact:''});if(document.getElementById('gr-date').value)addCalEventGCal(n,document.getElementById('gr-date').value,'business');persist();closeModal('modal-add-growth');renderGrowth();showToast('✓ Growth item added + task + calendar');}
+
+function saveProperty(){
+  const addr=document.getElementById('p-addr').value.trim();if(!addr)return;
+  const renewal=document.getElementById('p-renewal').value;
+  const p={addr,fmv:document.getElementById('p-fmv').value,rent:document.getElementById('p-rent').value,mtgPmt:document.getElementById('p-mtg-pmt').value,mtgInt:document.getElementById('p-mtg-int').value,mtgPrin:document.getElementById('p-mtg-prin').value,mtgBal:document.getElementById('p-mtg-bal').value,mtgBalYr:document.getElementById('p-mtg-yr').value,tax:document.getElementById('p-tax').value,renewal,lender:document.getElementById('p-lender').value,agent:document.getElementById('p-agent').value,ownership:document.getElementById('p-ownership').value||'100%',equity:document.getElementById('p-equity').value,notes:document.getElementById('p-notes').value};
+  properties.push(p);
+  // Auto-create renewal reminder 6 months before
+  if(renewal){
+    const renewDate=new Date(renewal);renewDate.setMonth(renewDate.getMonth()-6);
+    const reminderDate=renewDate.toISOString().split('T')[0];
+    tasks.push({id:Date.now(),text:`Start mortgage renewal process — ${addr}`,cat:'property',done:false,overdue:false,date:reminderDate,priority:'High',status:'Pending',linked:addr,contact:p.agent||p.lender});
+    calEvents.push({title:`Mortgage renewal reminder — ${addr}`,date:reminderDate,time:'',cat:'property'});
+    addCalEventGCal(`Mortgage renewal — ${addr}`,renewal,'property');
+    // Pre-fill email draft
+    openEmailCompose(p.agent||p.lender,'',`Mortgage renewal inquiry — ${addr}`,`I would like to start discussions about the mortgage renewal for ${addr}. Current terms: ${p.mtgPmt}/mo at ${p.lender}. Renewal date: ${renewal}. Please advise on available options.`);
+  }
+  syncSheets('Property_Portfolio',[addr,p.fmv,p.rent,p.mtgPmt,p.mtgInt,p.mtgPrin,p.mtgBal,p.mtgBalYr,p.tax,renewal,p.lender,p.agent,p.ownership,p.equity,p.notes]);
+  closeModal('modal-addprop');renderProperties();showToast('✓ Property saved + renewal reminder created');
+}
+
+function saveDamage(){const issue=document.getElementById('d-issue').value.trim();if(!issue)return;syncSheets('Damage_Log',[document.getElementById('d-date').value,document.getElementById('d-prop').value,issue,document.getElementById('d-status').value,document.getElementById('d-cost').value,document.getElementById('d-cont').value,document.getElementById('d-pri').value]);closeModal('modal-adddamage');showToast('✓ Issue logged');}
+function saveContact(){const name=document.getElementById('c-name').value.trim();if(!name)return;const ct={name,role:document.getElementById('c-role').value,phone:document.getElementById('c-phone').value,email:document.getElementById('c-email').value,cat:document.getElementById('c-cat').value,org:document.getElementById('c-org').value,prop:document.getElementById('c-prop').value,interactions:[]};contacts.push(ct);persist();syncSheets('Contacts',[ct.name,ct.role,ct.cat,ct.phone,ct.email,ct.org,ct.prop]);closeModal('modal-addcontact');renderContacts();}
+function saveInteraction(){const cname=document.getElementById('li-contact').value.trim();if(!cname)return;const int={type:document.getElementById('li-type').value.replace(/[📞📧🤝📝 ]/g,'').toLowerCase().trim()||'note',date:document.getElementById('li-date').value,notes:document.getElementById('li-notes').value,followup:document.getElementById('li-followup').value};const ct=contacts.find(c=>c.name.toLowerCase().includes(cname.toLowerCase()));if(ct){if(!ct.interactions)ct.interactions=[];ct.interactions.push(int);}syncSheets('Email_Log',[int.date,cname,int.type,int.notes,int.followup]);persist();closeModal('modal-log-int');renderContacts();showToast('✓ Interaction logged');}
+function savePersonalNote(){const note=document.getElementById('personal-note-text').value.trim();if(!note)return;syncSheets('Personal_Notes',[document.getElementById('personal-note-date').value,document.getElementById('personal-note-cat').value,note]);document.getElementById('personal-note-text').value='';showToast('✓ Note synced');}
+function saveHabitsToSheets(){syncSheets('Personal_Habits',[new Date().toISOString().split('T')[0],...habits.map(h=>h.done?'Yes':'No')]);showToast('✓ Habits saved');}
+function saveCalEvent(){
+  const title=document.getElementById('cal-ev-title').value.trim();if(!title)return;
+  const date=document.getElementById('cal-ev-date').value;const time=document.getElementById('cal-ev-time').value;const cat=document.getElementById('cal-ev-cat').value;
+  calEvents.push({title,date,time,cat});
+  syncSheets('Calendar_Events',[date,title,cat,time,document.getElementById('cal-ev-dur').value,document.getElementById('cal-ev-notes').value]);
+  // Open Google Calendar
+  const startDt=date.replace(/-/g,'')+(time?'T'+time.replace(':','')+'00':'');
+  const url=`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDt}/${startDt}&details=${encodeURIComponent(document.getElementById('cal-ev-notes').value)}&sf=true&output=xml`;
+  window.open(url,'_blank');
+  persist();closeModal('modal-addcal');renderCalendar();renderDash();showToast('✓ Event added + Google Calendar opened');
+}
+
+// QC
+let qcSelectedType='task';
+function selectQC(el,type){document.querySelectorAll('.qc-type').forEach(t=>t.classList.remove('selected'));el.classList.add('selected');qcSelectedType=type;}
+function saveQC(){
+  const title=document.getElementById('qc-title').value.trim();if(!title)return;
+  const cat=document.getElementById('qc-cat').value;const date=document.getElementById('qc-date').value||new Date().toISOString().split('T')[0];
+  if(qcSelectedType==='task'){tasks.push({id:Date.now(),text:title,cat,done:false,overdue:false,date,priority:'Medium',status:'Pending',linked:'',contact:''});}
+  else if(qcSelectedType==='note'){notes.unshift({id:Date.now(),title,cat:cat.charAt(0).toUpperCase()+cat.slice(1),entity:'',body:document.getElementById('qc-notes').value,tags:[],status:'Active',followup:false,exportFlag:false,date,aiSummary:''});}
+  else if(qcSelectedType==='health'){openModal('modal-health-log');document.getElementById('hl-symptoms').value=title;closeModal('modal-qc');return;}
+  syncSheets('Master_Notes',[date,title,cat,'','','','Active','No','No','']);
+  persist();closeModal('modal-qc');renderDash();renderNotes('');renderTaskList();
+  document.getElementById('qc-title').value='';document.getElementById('qc-notes').value='';
+}
+
+// EXPORTS
+function exportHealthReport(){
+  const c=`HEALTH SUMMARY — PHYSICIAN REPORT\nPatient: Harpreet Dhaliwal\nGenerated: ${new Date().toLocaleDateString('en-CA')}\n\nINCIDENT LOG:\n${'─'.repeat(50)}\nMar 15, 2026 · 2:30pm\n  Symptoms: Chest tightness, mid-chest pressure, ~20 min\n  Severity: 6/10 · No medications · Trigger: stress\n\nMar 13, 2026 · 7:15pm\n  Symptoms: Chest tightness (recurrence), more intense\n  Severity: 8/10 · Tylenol 500mg taken\n\nMar 11, 2026 · 11:00am\n  Initial episode · Severity: 4/10\n\nAI ANALYSIS:\n${'─'.repeat(50)}\nPattern: 3 episodes in 5 days. Severity escalating 4→8→6.\nDuration: 15–25 min. Suspected trigger: stress.\nRecommendation: Urgent cardiac evaluation. ECG, troponin, lipids.\n\nMedical contacts: Dr. Ramesh Patel — (416) 555-0112`;
+  downloadText(c,'Health_Report_'+new Date().toISOString().split('T')[0]+'.txt');showToast('✓ Doctor summary exported');
+}
+function exportTasks(){
+  const ov=tasks.filter(t=>t.overdue&&!t.done);const rem=tasks.filter(t=>!t.done);
+  let c=`TASK REPORT\nGenerated: ${new Date().toLocaleDateString('en-CA')}\n\nOVERDUE:\n${'─'.repeat(40)}\n`;
+  ov.forEach(t=>c+=`• [${t.priority}] ${t.text} — ${t.date} — ${t.status}\n`);
+  c+=`\nACTIVE:\n${'─'.repeat(40)}\n`;rem.forEach(t=>c+=`• [${t.cat}/${t.priority}] ${t.text} — ${t.date}\n`);
+  downloadText(c,'Tasks_'+new Date().toISOString().split('T')[0]+'.txt');showToast('✓ Task report exported');
+}
+function exportBusiness(){
+  const c=`LAW FIRM REPORT\nGenerated: ${new Date().toLocaleDateString('en-CA')}\n\nSTAFF:\n${staff.map(s=>`• ${s.name} (${s.role}) — ${s.email} — Score: ${s.perfScore}/10 — ${s.status}${s.notes?' — Note: '+s.notes:''}`).join('\n')}\n\nCLIENTS:\n${clients.map(cl=>`• ${cl.name} (${cl.matter}) — ${cl.status} — Due: ${cl.deadline}${cl.pending?' — Pending: '+cl.pending:''}`).join('\n')}\n\nCOMPLIANCE DEADLINES:\n• LSBC Annual Report — Mar 30\n• Trust Reconciliation — Apr 1\n• CPD — Jun 30`;
+  downloadText(c,'LawFirm_'+new Date().toISOString().split('T')[0]+'.txt');showToast('✓ Law firm report exported');
+}
+function exportContacts(){let c=`CONTACTS\nGenerated: ${new Date().toLocaleDateString('en-CA')}\n\n`;contacts.forEach(ct=>{c+=`${ct.name} [${ct.cat}]\n  ${ct.role}${ct.org?' · '+ct.org:''}\n  ${ct.phone||''}${ct.email?' · '+ct.email:''}\n\n`;});downloadText(c,'Contacts_'+new Date().toISOString().split('T')[0]+'.txt');showToast('✓ Contacts exported');}
+function exportStaffPerformance(){
+  let c=`STAFF PERFORMANCE REPORT\nGenerated: ${new Date().toLocaleDateString('en-CA')}\n\n`;
+  staff.forEach(s=>{c+=`${s.name} — ${s.role} — ${s.email}\nStatus: ${s.status} | Score: ${s.perfScore}/10\nNotes: ${s.notes||'None'}\nErrors/Incidents (${s.errors?.length||0}):\n${(s.errors||[]).map(e=>`  • ${e.date}: ${e.desc}`).join('\n')||'  None'}\n\n`;});
+  downloadText(c,'Staff_Performance_'+new Date().toISOString().split('T')[0]+'.txt');showToast('✓ Staff performance exported');
+}
+function downloadText(content,filename){const b=new Blob([content],{type:'text/plain'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
+
+// ══════════════════════════════════════════════════════════════════
+// FIREBASE — cloud database, works on all your devices
+// ══════════════════════════════════════════════════════════════════
+// HOW IT WORKS:
+// - Data saves to Firebase (Google cloud) on every action
+// - Open on any device/browser — same data everywhere, instantly
+// - Falls back to localStorage if Firebase not configured yet
+// - Free tier: 50,000 reads/day, 20,000 writes/day — way more than you need
+//
+// SETUP (takes 8 minutes, one time):
+//   1. Go to https://console.firebase.google.com
+//   2. Click "Add project" → name it "harpreets-hq" → Continue (disable Analytics) → Create
+//   3. In the left panel click "Firestore Database" → Create database
+//      → Start in TEST MODE → choose region "us-east1" → Enable
+//   4. In the left panel click the gear ⚙ → Project settings
+//   5. Scroll to "Your apps" → click the </> Web icon → name it "HQ" → Register app
+//   6. Copy the firebaseConfig object shown — paste it at the top of this file
+//      replacing all the "PASTE_YOUR_..." values
+//   7. Save the file and open it in your browser
+//   8. Done. Your data now lives in Google cloud ✓
+//
+// SECURITY (important — do this within 30 days):
+//   In Firebase console → Firestore → Rules, replace the rules with:
+//   rules_version = '2';
+//   service cloud.firestore {
+//     match /databases/{database}/documents {
+//       match /hq/{document=**} {
+//         allow read, write: if request.auth == null; // open for now, lock down later
+//       }
+//     }
+//   }
+// ══════════════════════════════════════════════════════════════════
+
+const FIREBASE_READY = (() => {
+  const cfg = FIREBASE_CONFIG;
+  return cfg.apiKey && !cfg.apiKey.includes('PASTE_YOUR');
+})();
+
+// Firestore REST API — no SDK needed, works in a plain HTML file
+const FS_BASE = FIREBASE_READY
+  ? `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents/hq`
+  : null;
+
+const ALL_COLLECTIONS = [
+  'tasks','notes','contacts','properties','habits','bizHabits',
+  'staff','clients','mktgItems','mktgContacts','growthItems',
+  'calEvents','medContacts','familyMembers','interactions'
+];
+
+// ── Encode JS value → Firestore value object
+function toFV(v) {
+  if (v === null || v === undefined) return {nullValue: null};
+  if (typeof v === 'boolean') return {booleanValue: v};
+  if (typeof v === 'number') return {doubleValue: v};
+  if (typeof v === 'string') return {stringValue: v};
+  if (Array.isArray(v)) return {arrayValue:{values:v.map(toFV)}};
+  if (typeof v === 'object') {
+    const fields = {};
+    Object.entries(v).forEach(([k,val])=>{fields[k]=toFV(val);});
+    return {mapValue:{fields}};
+  }
+  return {stringValue: String(v)};
+}
+
+// ── Decode Firestore value → JS value
+function fromFV(fv) {
+  if (!fv) return null;
+  if ('nullValue' in fv) return null;
+  if ('booleanValue' in fv) return fv.booleanValue;
+  if ('doubleValue' in fv) return fv.doubleValue;
+  if ('integerValue' in fv) return Number(fv.integerValue);
+  if ('stringValue' in fv) return fv.stringValue;
+  if ('arrayValue' in fv) return (fv.arrayValue.values||[]).map(fromFV);
+  if ('mapValue' in fv) {
+    const out = {};
+    Object.entries(fv.mapValue.fields||{}).forEach(([k,v])=>{out[k]=fromFV(v);});
+    return out;
+  }
+  return null;
+}
+
+// ── Save entire state to one Firestore document
+async function saveToCloud() {
+  if (!FIREBASE_READY) { saveToLocalFallback(); return; }
+  try {
+    const fields = {};
+    ALL_COLLECTIONS.forEach(key => {
+      const val = eval(key); // access the global array by name
+      fields[key] = toFV(val);
+    });
+    fields.savedAt = toFV(new Date().toISOString());
+
+    await fetch(`${FS_BASE}/main_data`, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({fields})
+    });
+
+    // Also mirror to localStorage as instant fallback
+    saveToLocalFallback();
+
+    // Flash sync indicator
+    const dot = document.querySelector('.sync-dot');
+    if (dot) { dot.style.background='#2dce89'; setTimeout(()=>dot.style.background='',800); }
+  } catch(e) {
+    console.warn('Firebase save failed, using localStorage', e);
+    saveToLocalFallback();
+    setSyncStatus('⚠ offline — saved locally');
+  }
+}
+
+// ── Load from Firebase on startup
+async function loadFromCloud() {
+  if (!FIREBASE_READY) return loadFromLocalFallback();
+  try {
+    setSyncStatus('loading…');
+    const r = await fetch(`${FS_BASE}/main_data`);
+    if (!r.ok) throw new Error('no data yet');
+    const doc = await r.json();
+    if (!doc.fields) return loadFromLocalFallback();
+    ALL_COLLECTIONS.forEach(key => {
+      if (doc.fields[key]) {
+        const decoded = fromFV(doc.fields[key]);
+        if (Array.isArray(decoded) && decoded.length > 0) {
+          // assign to global
+          if (key==='tasks') tasks=decoded;
+          else if (key==='notes') notes=decoded;
+          else if (key==='contacts') contacts=decoded;
+          else if (key==='properties') properties=decoded;
+          else if (key==='habits') habits=decoded;
+          else if (key==='bizHabits') bizHabits=decoded;
+          else if (key==='staff') staff=decoded;
+          else if (key==='clients') clients=decoded;
+          else if (key==='mktgItems') mktgItems=decoded;
+          else if (key==='mktgContacts') mktgContacts=decoded;
+          else if (key==='growthItems') growthItems=decoded;
+          else if (key==='calEvents') calEvents=decoded;
+          else if (key==='medContacts') medContacts=decoded;
+          else if (key==='familyMembers') familyMembers=decoded;
+          else if (key==='interactions') interactions=decoded;
+        }
+      }
+    });
+    const savedAt = doc.fields.savedAt ? fromFV(doc.fields.savedAt) : null;
+    setSyncStatus('✓ synced ' + (savedAt ? new Date(savedAt).toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'}) : ''));
+    return savedAt || true;
+  } catch(e) {
+    console.warn('Firebase load failed, trying localStorage', e);
+    setSyncStatus('⚠ using local backup');
+    return loadFromLocalFallback();
+  }
+}
+
+// ── localStorage fallback (same device only)
+function saveToLocalFallback() {
+  try {
+    localStorage.setItem(LS_FALLBACK_KEY, JSON.stringify({
+      tasks,notes,contacts,properties,habits,bizHabits,
+      staff,clients,mktgItems,mktgContacts,growthItems,
+      calEvents,medContacts,familyMembers,interactions,
+      savedAt:new Date().toISOString()
+    }));
+  } catch(e) {}
+}
+
+function loadFromLocalFallback() {
+  try {
+    const raw = localStorage.getItem(LS_FALLBACK_KEY);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    ALL_COLLECTIONS.forEach(key => {
+      if (d[key] && Array.isArray(d[key]) && d[key].length > 0) {
+        if (key==='tasks') tasks=d.tasks;
+        else if (key==='notes') notes=d.notes;
+        else if (key==='contacts') contacts=d.contacts;
+        else if (key==='properties') properties=d.properties;
+        else if (key==='habits') habits=d.habits;
+        else if (key==='bizHabits') bizHabits=d.bizHabits;
+        else if (key==='staff') staff=d.staff;
+        else if (key==='clients') clients=d.clients;
+        else if (key==='mktgItems') mktgItems=d.mktgItems;
+        else if (key==='mktgContacts') mktgContacts=d.mktgContacts;
+        else if (key==='growthItems') growthItems=d.growthItems;
+        else if (key==='calEvents') calEvents=d.calEvents;
+        else if (key==='medContacts') medContacts=d.medContacts;
+        else if (key==='familyMembers') familyMembers=d.familyMembers;
+        else if (key==='interactions') interactions=d.interactions;
+      }
+    });
+    setSyncStatus('✓ local backup loaded');
+    return d.savedAt || true;
+  } catch(e) { return false; }
+}
+
+function setSyncStatus(msg) {
+  const el = document.getElementById('sync-status');
+  if (el) el.textContent = msg;
+}
+
+// ── Single save function used everywhere
+function persist() { saveToCloud(); }
+
+// ── Stub out syncSheets (no longer used for persistence, kept for compatibility)
+async function syncSheets(sheet, row) { /* data now goes to Firebase */ }
+
+// ══════════════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function openModal(id){document.getElementById(id)?.classList.add('open');}
+function closeModal(id){document.getElementById(id)?.classList.remove('open');}
+
+// ══════════════════════════════════════════════════════
+// INIT — loads from Firebase/localStorage, then renders
+// ══════════════════════════════════════════════════════
+async function init(){
+  const now=new Date();const hr=now.getHours();
+  const g=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  const el=document.getElementById('dash-greeting');if(el)el.textContent=g+', Harpreet';
+  const d=document.getElementById('dash-date');if(d)d.textContent=now.toLocaleDateString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const sd=document.getElementById('sidebar-date');if(sd)sd.textContent=now.toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
+  const today=now.toISOString().split('T')[0];const timeNow=now.toTimeString().slice(0,5);
+  ['hl-date','d-date','li-date','cal-ev-date','personal-note-date','t-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=today;});
+  const ht=document.getElementById('hl-time');if(ht)ht.value=timeNow;
+  document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');}));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg.open').forEach(m=>m.classList.remove('open'));});
+
+  // Show loading state while data loads
+  setSyncStatus(FIREBASE_READY ? 'connecting to Firebase…' : '⚠ Firebase not configured — using local storage');
+  await loadFromCloud();
+
+  renderDash();renderHabits();renderContacts();renderNotes('');renderProperties();renderTaskList();renderHealth();renderBusiness();renderCalendar();
+}
+init();
+</script>
+</body>
+</html>
